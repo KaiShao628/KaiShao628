@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# ==========================
+# 自动推送 Git 仓库脚本
+# ==========================
+
+# 确保在 Git 仓库目录
+if [ ! -d ".git" ]; then
+    echo "❌ 当前目录不是 Git 仓库，请先进入仓库目录再运行脚本"
+    exit 1
+fi
+
+# 配置 Git 全局代理（修改为你的代理地址和端口）
+PROXY="127.0.0.1:7890"
+git config --global http.proxy http://$PROXY
+git config --global https.proxy http://$PROXY
+echo "🌐 Git 代理已设置为 $PROXY"
+
+# 获取当前分支
+CURRENT_BRANCH=$(git branch --show-current)
+if [ -z "$CURRENT_BRANCH" ]; then
+    echo "❌ 无法获取当前分支，请先切换到一个有效分支"
+    exit 1
+fi
+echo "📌 当前分支: $CURRENT_BRANCH"
+
+# 获取远程仓库 URL
+REMOTE_URL=$(git remote get-url origin)
+if [[ $REMOTE_URL != https://* ]]; then
+    echo "⚠️ 当前远程仓库不是 HTTPS，代理可能无法生效"
+fi
+
+# 测试连接 GitHub
+echo "🔍 测试 GitHub 连接..."
+git ls-remote $REMOTE_URL &> /dev/null
+if [ $? -eq 0 ]; then
+    echo "✅ 连接成功"
+else
+    echo "❌ 连接失败，请检查代理是否可用"
+    exit 1
+fi
+
+# 推送当前分支
+echo "🚀 推送当前分支 $CURRENT_BRANCH ..."
+git push origin $CURRENT_BRANCH
+if [ $? -eq 0 ]; then
+    echo "🎉 推送完成"
+else
+    echo "❌ 推送失败，请检查网络或仓库状态"
+fi
