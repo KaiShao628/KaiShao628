@@ -1,0 +1,9 @@
+# Root-level IDE and build output ignores
+.vs/
+[Bb]in/
+[Oo]bj/
+*.suo
+*.user
+*.userosscache
+*.rsuser
+*.sln.docstates
