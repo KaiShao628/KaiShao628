@@ -1,0 +1,38 @@
+﻿@page "/"
+@using KLHomeManagement.Components.Pages.Tools
+@attribute [TabItemOption(Text = "首页", Closable = false)]
+<style>
+    /* 全局容器样式 - 宽度铺满整个页面 */
+    .timers-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        /* Grid布局 - 一列两个 */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2列等宽 */
+        gap: 2rem; /* 计时器之间的间距 */
+        box-sizing: border-box;
+    }
+</style>
+
+<PageTitle>首页</PageTitle>
+
+<div class="title-container">
+    <h1 class="title-with-heart">
+        Welcome To LDK  <span class="heart-icon"></span> LML Home
+    </h1>
+</div>
+
+
+<Row ItemsPerRow="ItemsPerRow.Two">
+    @foreach (var item in MemoryDays)
+    {
+        <LoveTimeCounter Title="@item.DayName" StartTime="@item.DayTime" />
+    }
+</Row>
+
+
+
+

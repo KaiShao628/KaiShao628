@@ -1,0 +1,179 @@
+﻿/* 卡片样式 - 宽度100%，高度可自定义，flex布局实现同行显示 */
+.time-card {
+    background: linear-gradient(177deg, #f5f7fa 0%, #f57aca 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    padding: 2rem;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 100%;
+    /* 自定义高度 */
+    height: 140px;
+    /* Flex布局实现标题和时间同行 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    box-sizing: border-box;
+}
+
+/* 标题样式 - 同行显示 */
+.timer-title {
+    color: #2d3748;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap; /* 防止标题换行 */
+}
+
+/* 时间数字容器 */
+.time-values {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* 单个时间单位样式 */
+.time-unit {
+    text-align: center;
+    min-width: 80px;
+}
+
+/* 数字样式 */
+.time-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2563eb;
+    line-height: 1.2;
+    transition: all 0.2s ease-in-out;
+    background: #ffffff;
+    padding: 0.8rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* 单位文字样式 */
+.time-label {
+    font-size: 0.8rem;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 响应式适配 */
+@media (max-width: 992px) {
+    /* 中等屏幕 - 保持两列，但缩小间距 */
+    .timers-container {
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .time-card {
+        padding: 1.5rem;
+        height: 180px;
+        gap: 1.5rem;
+    }
+
+    .timer-title {
+        font-size: 1.8rem;
+    }
+
+    .time-number {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* 小屏幕 - 自动变为单列 */
+    .timers-container {
+        grid-template-columns: 1fr;
+    }
+
+    .time-card {
+        padding: 1.5rem;
+        height: auto; /* 移动端自动高度 */
+        flex-direction: column; /* 移动端换行显示 */
+        gap: 1rem;
+    }
+
+    .timer-title {
+        font-size: 1.5rem;
+    }
+
+    .time-values {
+        gap: 1rem;
+    }
+
+    .time-number {
+        font-size: 1.8rem;
+        padding: 0.8rem;
+    }
+}
+
+
+/* 标题整体样式：让文字和爱心垂直居中对齐 */
+.title-with-heart {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* 文字和爱心之间的间距 */
+    font-size: 28px;
+}
+
+/* 爱心样式基础 */
+.heart-icon {
+    /* 绘制爱心形状 */
+    position: relative;
+    width: 24px;
+    height: 24px;
+    background-color: #ff3366; /* 红色爱心 */
+    transform: rotate(45deg);
+    animation: heartbeat 1.5s infinite; /* 绑定心跳动画 */
+}
+
+    /* 爱心的左右圆弧（完成爱心形状） */
+    .heart-icon::before,
+    .heart-icon::after {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-color: #ff3366;
+        border-radius: 50%; /* 圆形 */
+    }
+
+    .heart-icon::before {
+        top: -12px; /* 上半圆位置 */
+        left: 0;
+    }
+
+    .heart-icon::after {
+        top: 0;
+        left: -12px; /* 左半圆位置 */
+    }
+
+/* 心跳动画：缩放+轻微旋转 */
+@keyframes heartbeat {
+    0% {
+        transform: rotate(45deg) scale(1);
+    }
+
+    15% {
+        transform: rotate(45deg) scale(1.2);
+    }
+
+    30% {
+        transform: rotate(45deg) scale(1);
+    }
+
+    45% {
+        transform: rotate(45deg) scale(1.2);
+    }
+
+    60% {
+        transform: rotate(45deg) scale(1);
+    }
+}

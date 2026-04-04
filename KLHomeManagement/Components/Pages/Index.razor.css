@@ -1,0 +1,72 @@
+﻿/* 标题外层容器：实现整体居中 */
+.title-container {
+    /* 核心：让容器宽度自适应内容，且水平居中 */
+    width: fit-content;
+    margin: 0 auto; /* 上下边距0，左右自动（水平居中） */
+    /* 可选：添加上下间距，避免贴边 */
+    margin-top: 20px;
+}
+
+/* 标题整体样式：让文字和爱心垂直居中对齐 */
+.title-with-heart {
+    display: flex;
+    align-items: center;
+    text-align:center;
+    gap: 8px; /* 文字和爱心之间的间距 */
+    font-size: 28px;
+}
+
+/* 爱心样式基础 */
+.heart-icon {
+    /* 绘制爱心形状 */
+    position: relative;
+    width: 24px;
+    height: 24px;
+    background-color: #ff3366; /* 红色爱心 */
+    transform: rotate(45deg);
+    animation: heartbeat 1.5s infinite; /* 绑定心跳动画 */
+}
+
+    /* 爱心的左右圆弧（完成爱心形状） */
+    .heart-icon::before,
+    .heart-icon::after {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-color: #ff3366;
+        border-radius: 50%; /* 圆形 */
+    }
+
+    .heart-icon::before {
+        top: -12px; /* 上半圆位置 */
+        left: 0;
+    }
+
+    .heart-icon::after {
+        top: 0;
+        left: -12px; /* 左半圆位置 */
+    }
+
+/* 心跳动画：缩放+轻微旋转 */
+@keyframes heartbeat {
+    0% {
+        transform: rotate(45deg) scale(1);
+    }
+
+    15% {
+        transform: rotate(45deg) scale(1.2);
+    }
+
+    30% {
+        transform: rotate(45deg) scale(1);
+    }
+
+    45% {
+        transform: rotate(45deg) scale(1.2);
+    }
+
+    60% {
+        transform: rotate(45deg) scale(1);
+    }
+}
