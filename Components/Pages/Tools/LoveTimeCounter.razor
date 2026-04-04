@@ -1,0 +1,29 @@
+﻿<div class="time-card">
+    <span class="heart-icon"></span>
+    <h2 class="timer-title">@Title：</h2>
+    <div class="time-values">
+        <!-- 天数 -->
+        <div class="time-unit">
+            <span class="time-number">@_timeSpan.Days</span>
+            <span class="time-label">天</span>
+        </div>
+
+        <!-- 小时 -->
+        <div class="time-unit">
+            <span class="time-number">@_timeSpan.Hours.ToString("D2")</span>
+            <span class="time-label">时</span>
+        </div>
+
+        <!-- 分钟 -->
+        <div class="time-unit">
+            <span class="time-number">@_timeSpan.Minutes.ToString("D2")</span>
+            <span class="time-label">分</span>
+        </div>
+
+        <!-- 秒数 -->
+        <div class="time-unit">
+            <span class="time-number">@_timeSpan.Seconds.ToString("D2")</span>
+            <span class="time-label">秒</span>
+        </div>
+    </div>
+</div>
