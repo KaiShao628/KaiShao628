@@ -1,0 +1,93 @@
+.brand-block {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 1.5rem 1.25rem;
+    color: #f6efe3;
+}
+
+.brand-mark {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.9rem;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    background: linear-gradient(145deg, #f7c446, #ef8f3d);
+    color: #2d2217;
+}
+
+.navbar-brand {
+    display: block;
+    color: #fff7ed;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.brand-block p {
+    margin: 0.2rem 0 0;
+    color: rgba(255, 247, 237, 0.78);
+    font-size: 0.9rem;
+}
+
+.nav-list {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0 1rem;
+}
+
+.nav-item {
+    display: block;
+    padding: 0.95rem 1rem;
+    border-radius: 1rem;
+    text-decoration: none;
+    color: rgba(255, 247, 237, 0.92);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.nav-item:hover {
+    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.11);
+}
+
+.nav-item.active {
+    background: rgba(247, 196, 70, 0.18);
+    border-color: rgba(247, 196, 70, 0.28);
+}
+
+.nav-item span {
+    display: block;
+    font-weight: 700;
+}
+
+.nav-item small {
+    display: block;
+    margin-top: 0.2rem;
+    color: rgba(255, 247, 237, 0.72);
+}
+
+.sidebar-note {
+    margin: 1.5rem 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: rgba(22, 31, 46, 0.22);
+    color: #ecf5ff;
+}
+
+.sidebar-note .title {
+    margin: 0 0 0.75rem;
+    font-weight: 700;
+}
+
+.sidebar-note ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.sidebar-note li + li {
+    margin-top: 0.4rem;
+}
