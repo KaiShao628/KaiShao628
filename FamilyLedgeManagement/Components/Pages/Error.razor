@@ -1,0 +1,15 @@
+@page "/Error"
+@attribute [TabItemOption(Text = "系统错误")]
+
+<PageTitle>系统错误</PageTitle>
+
+<Card HeaderText="系统异常" IsShadow="true">
+    <BodyTemplate>
+        <Alert Color="Color.Danger" ShowBar="true" ShowBorder="true">处理请求时发生了异常，请稍后重试。</Alert>
+        @if (ShowRequestId)
+        {
+            <p><strong>Request ID:</strong> <code>@RequestId</code></p>
+        }
+        <LinkButton Text="返回首页" Url="/" Color="Color.Primary" />
+    </BodyTemplate>
+</Card>

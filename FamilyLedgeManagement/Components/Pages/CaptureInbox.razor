@@ -1,0 +1,55 @@
+@page "/capture-inbox"
+@attribute [TabItemOption(Text = "截图收件箱")]
+
+<PageTitle>截图收件箱</PageTitle>
+
+<div class="capture-layout">
+    <Card HeaderText="iPhone 快捷指令接入建议" IsShadow="true">
+        <BodyTemplate>
+            <Alert Color="Color.Info" ShowBorder="true" ShowBar="true">推荐链路：截图或分享图片 -> 快捷指令 -> 接口上传草稿 -> 收件箱复核 -> 转正式账单。</Alert>
+            <ol class="flow-list">
+                <li>截图后通过辅助功能或分享面板触发快捷指令。</li>
+                <li>快捷指令直接调用 <code>POST /api/family-ledger/capture-drafts</code>。</li>
+                <li>先上传识别后的金额、商户、文本摘要。</li>
+                <li>在本页复核并一键转成正式支出。</li>
+            </ol>
+        </BodyTemplate>
+    </Card>
+
+    <Card HeaderText="待确认账单" IsShadow="true">
+        <BodyTemplate>
+            @if (Drafts.Count == 0)
+            {
+                <Alert Color="Color.Secondary" ShowBar="true" ShowBorder="true">当前没有待确认账单。</Alert>
+            }
+            else
+            {
+                @foreach (var draft in Drafts)
+                {
+                    <Card HeaderText="@draft.MerchantName" IsShadow="true" Class="capture-draft-card">
+                        <BodyTemplate>
+                            <Display TValue="decimal?" Value="@draft.SuggestedAmount" FormatString="C" ShowLabel="false" />
+                            <div class="draft-meta">
+                                <span>@draft.MemberName</span>
+                                <span>@draft.CategoryName</span>
+                                <span>@draft.CapturedAt.LocalDateTime.ToString("MM-dd HH:mm")</span>
+                                <span>@draft.Status</span>
+                            </div>
+                            <Alert Color="Color.Light" ShowBorder="true">@draft.Source</Alert>
+                            @if (!string.IsNullOrWhiteSpace(draft.RecognizedText))
+                            {
+                                <Textarea Value="@draft.RecognizedText" Rows="3" Readonly="true" />
+                            }
+                            @if (draft.Status == CaptureDraftStatus.Pending)
+                            {
+                                <div class="action-row mt-3">
+                                    <Button Text="转为正式支出" Color="Color.Primary" OnClick="@(async _ => await PromoteAsync(draft.Id))" />
+                                </div>
+                            }
+                        </BodyTemplate>
+                    </Card>
+                }
+            }
+        </BodyTemplate>
+    </Card>
+</div>

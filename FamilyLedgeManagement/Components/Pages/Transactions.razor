@@ -1,0 +1,37 @@
+@page "/transactions"
+@attribute [TabItemOption(Text = "账单流水")]
+
+<PageTitle>账单流水</PageTitle>
+
+<Card HeaderText="账单流水" IsShadow="true">
+    <BodyTemplate>
+        <div class="toolbar-row">
+            <div>
+                <label class="form-label">月份</label>
+                <Select TValue="string" @bind-Value="SelectedMonthText">
+                    @foreach (var month in MonthOptions)
+                    {
+                        <SelectOption Value="@month" Text="@month" />
+                    }
+                </Select>
+            </div>
+            <div class="action-row">
+                <Button Text="刷新" Color="Color.Primary" OnClick="@(async _ => await ReloadAsync())" />
+                <LinkButton Text="新增账单" Url="/quick-entry" Color="Color.Success" IsOutline="true" />
+            </div>
+        </div>
+
+        <Table TItem="TransactionListItemDto" Items="@Items" IsBordered="true" IsStriped="true" ShowSearch="true" ShowToolbar="true">
+            <TableColumns>
+                <TableColumn @bind-Field="@context.OccurredAt" Text="时间" FormatString="yyyy-MM-dd HH:mm" />
+                <TableColumn @bind-Field="@context.Kind" Text="类型" />
+                <TableColumn @bind-Field="@context.MemberName" Text="成员" Searchable="true" />
+                <TableColumn @bind-Field="@context.CategoryName" Text="分类" Searchable="true" />
+                <TableColumn @bind-Field="@context.MerchantName" Text="商户" Searchable="true" />
+                <TableColumn @bind-Field="@context.PaymentMethod" Text="支付方式" />
+                <TableColumn @bind-Field="@context.Amount" Text="金额" FormatString="C" Sortable="true" />
+                <TableColumn @bind-Field="@context.Note" Text="备注" />
+            </TableColumns>
+        </Table>
+    </BodyTemplate>
+</Card>

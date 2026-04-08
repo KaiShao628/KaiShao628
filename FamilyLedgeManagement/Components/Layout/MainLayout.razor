@@ -1,0 +1,40 @@
+@inherits LayoutComponentBase
+
+<BootstrapBlazorRoot>
+    <Layout ShowGotoTop="true" ShowCollapseBar="true" SideWidth="0" IsPage="true"
+            IsFullSide="@IsFullSide" IsFixedHeader="@IsFixedHeader" IsFixedFooter="@IsFixedFooter"
+            ShowSplitBar="true" SidebarMinWidth="220" SidebarMaxWidth="360"
+            TabStyle="TabStyle.Chrome" ShowToolbar="true" ShowTabContextMenu="true"
+            ShowTabInHeader="@ShowTabInHeader" ShowTabExtendButtons="false"
+            TabDefaultUrl="/" UseTabSet="@UseTabSet" IsFixedTabHeader="@IsFixedTabHeader"
+            AdditionalAssemblies="new[] { GetType().Assembly }" Menus="@Menus" Class="family-ledger-theme">
+        <Header>
+            <div class="header-brand">
+                <span class="header-title">家庭记账系统</span>
+                <span class="header-subtitle">Bootstrap Blazor 模板版</span>
+            </div>
+        </Header>
+        <Side>
+            <div class="layout-banner">
+                <img class="layout-logo" src="images/logo.png" />
+                <div class="layout-title">
+                    <span>Family Ledger</span>
+                </div>
+            </div>
+        </Side>
+        <Main>
+            <CascadingValue Value="this" IsFixed="true">
+                @Body
+            </CascadingValue>
+        </Main>
+        <Footer>
+            <div class="text-center flex-fill">快速记账、截图收件箱、家庭共享账本</div>
+        </Footer>
+    </Layout>
+</BootstrapBlazorRoot>
+
+<div id="blazor-error-ui">
+    系统发生未处理异常。
+    <a href="" class="reload">刷新</a>
+    <a class="dismiss">×</a>
+</div>

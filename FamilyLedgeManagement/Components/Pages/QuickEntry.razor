@@ -1,0 +1,94 @@
+@page "/quick-entry"
+@attribute [TabItemOption(Text = "快速记账")]
+
+<PageTitle>快速记账</PageTitle>
+
+@if (Context is null)
+{
+    <Alert Color="Color.Info" ShowBar="true" ShowBorder="true">正在加载记账上下文...</Alert>
+}
+else
+{
+    <div class="page-quick-entry">
+        <Card HeaderText="快速记账" IsShadow="true">
+            <BodyTemplate>
+                <Alert Color="Color.Light" ShowBorder="true" ShowBar="true">默认先服务“家庭日常支出”，把金额、分类、成员压缩成最少输入项。</Alert>
+
+                <ValidateForm Model="@Request" OnValidSubmit="SaveAsync">
+                    <div class="form-grid">
+                        <div>
+                            <label class="form-label">收支类型</label>
+                            <Select TValue="string" @bind-Value="KindValue">
+                                <SelectOption Value="Expense" Text="支出" />
+                                <SelectOption Value="Income" Text="收入" />
+                            </Select>
+                        </div>
+                        <div>
+                            <label class="form-label">金额</label>
+                            <BootstrapInputNumber TValue="decimal" @bind-Value="Request.Amount" ShowButton="true" Step="1" />
+                        </div>
+                        <div>
+                            <label class="form-label">家庭成员</label>
+                            <Select TValue="string" @bind-Value="Request.MemberId">
+                                @foreach (var member in Context.Members)
+                                {
+                                    <SelectOption Value="@member.Id" Text="@member.Name" />
+                                }
+                            </Select>
+                        </div>
+                        <div>
+                            <label class="form-label">分类</label>
+                            <Select TValue="string" @bind-Value="Request.CategoryId">
+                                @foreach (var category in FilteredCategories)
+                                {
+                                    <SelectOption Value="@category.Id" Text="@category.Name" />
+                                }
+                            </Select>
+                        </div>
+                        <div>
+                            <label class="form-label">商户/场景</label>
+                            <BootstrapInput TValue="string" @bind-Value="Request.MerchantName" />
+                        </div>
+                        <div>
+                            <label class="form-label">支付方式</label>
+                            <Select TValue="string" @bind-Value="Request.PaymentMethod">
+                                @foreach (var method in Context.PaymentMethods)
+                                {
+                                    <SelectOption Value="@method" Text="@method" />
+                                }
+                            </Select>
+                        </div>
+                        <div>
+                            <label class="form-label">发生时间</label>
+                            <DateTimePicker TValue="DateTimeOffset?" @bind-Value="Request.OccurredAt" />
+                        </div>
+                        <div class="full">
+                            <label class="form-label">备注</label>
+                            <Textarea @bind-Value="Request.Note" Rows="3" />
+                        </div>
+                    </div>
+                    <div class="action-row">
+                        <Button Text="保存账单" Color="Color.Primary" ButtonType="ButtonType.Submit" />
+                        <Button Text="晚餐预设" Color="Color.Success" IsOutline="true" OnClick="@(_ => FillDinnerPreset())" />
+                        <Button Text="买菜预设" Color="Color.Warning" IsOutline="true" OnClick="@(_ => FillGroceriesPreset())" />
+                    </div>
+                </ValidateForm>
+
+                @if (!string.IsNullOrWhiteSpace(Message))
+                {
+                    <Alert Color="Color.Success" ShowBar="true" ShowBorder="true">@Message</Alert>
+                }
+            </BodyTemplate>
+        </Card>
+
+        <Card HeaderText="录入优化方向" IsShadow="true">
+            <BodyTemplate>
+                <ul class="tip-list">
+                    <li>保持“金额 + 分类 + 成员”三步内完成录入。</li>
+                    <li>备注和商户信息允许后补，不阻塞保存。</li>
+                    <li>快捷指令上传的截图先落到收件箱，再确认转账单。</li>
+                </ul>
+            </BodyTemplate>
+        </Card>
+    </div>
+}

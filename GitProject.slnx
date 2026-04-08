@@ -1,4 +1,5 @@
-<Solution>
-  <Project Path="FamilyLedger/FamilyLedger.csproj" />
+﻿<Solution>
+    <Project Path="FamilyLedgeManagement/FamilyLedgeManagement.csproj" />
   <Project Path="KLHomeManagement/KLHomeManagement.csproj" />
 </Solution>
+

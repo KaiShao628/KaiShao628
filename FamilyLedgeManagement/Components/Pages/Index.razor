@@ -1,0 +1,76 @@
+@page "/"
+@attribute [TabItemOption(Text = "概览", Closable = false)]
+
+<PageTitle>家庭账本概览</PageTitle>
+
+<div class="page-dashboard">
+    <Card HeaderText="项目目标" IsShadow="true">
+        <BodyTemplate>
+            <div class="dashboard-intro">
+                <div>
+                    <h2>让家庭成员愿意记，而不是被迫记。</h2>
+                    <p>第一版优先把“快速记一笔”和“截图转待确认账单”做顺，再逐步补齐统计、预算和自动化。</p>
+                </div>
+                <div class="dashboard-links">
+                    <LinkButton Text="现在记一笔" Url="/quick-entry" Color="Color.Primary" />
+                    <LinkButton Text="看截图收件箱" Url="/capture-inbox" Color="Color.Info" IsOutline="true" />
+                </div>
+            </div>
+        </BodyTemplate>
+    </Card>
+
+    <div class="dashboard-stats">
+        <Card HeaderText="本月支出" Color="Color.Danger" IsShadow="true">
+            <BodyTemplate>
+                <Display TValue="decimal" Value="@Dashboard.MonthExpense" FormatString="C" ShowLabel="false" />
+                <p>家庭最常见的快速录入目标</p>
+            </BodyTemplate>
+        </Card>
+        <Card HeaderText="本月收入" Color="Color.Success" IsShadow="true">
+            <BodyTemplate>
+                <Display TValue="decimal" Value="@Dashboard.MonthIncome" FormatString="C" ShowLabel="false" />
+                <p>用于结余和月度总览</p>
+            </BodyTemplate>
+        </Card>
+        <Card HeaderText="本月结余" Color="Color.Info" IsShadow="true">
+            <BodyTemplate>
+                <Display TValue="decimal" Value="@Dashboard.NetBalance" FormatString="C" ShowLabel="false" />
+                <p>收入减去支出的即时结果</p>
+            </BodyTemplate>
+        </Card>
+        <Card HeaderText="待确认截图" Color="Color.Warning" IsShadow="true">
+            <BodyTemplate>
+                <Display TValue="int" Value="@Dashboard.PendingCaptureCount" ShowLabel="false" />
+                <p>快捷指令上传后在这里消化</p>
+            </BodyTemplate>
+        </Card>
+    </div>
+
+    <div class="dashboard-grid-two">
+        <Card HeaderText="最近账单" IsShadow="true">
+            <BodyTemplate>
+                <Table TItem="TransactionListItemDto" Items="@Dashboard.RecentTransactions" ShowToolbar="false" ShowSearch="false" IsBordered="true" IsStriped="true">
+                    <TableColumns>
+                        <TableColumn @bind-Field="@context.CategoryName" Text="分类" />
+                        <TableColumn @bind-Field="@context.MemberName" Text="成员" />
+                        <TableColumn @bind-Field="@context.MerchantName" Text="商户" />
+                        <TableColumn @bind-Field="@context.Amount" Text="金额" FormatString="C" />
+                        <TableColumn @bind-Field="@context.OccurredAt" Text="时间" FormatString="MM-dd HH:mm" />
+                    </TableColumns>
+                </Table>
+            </BodyTemplate>
+        </Card>
+
+        <Card HeaderText="截图识别闭环" IsShadow="true">
+            <BodyTemplate>
+                <Alert Color="Color.Light" ShowBar="true" ShowBorder="true">iPhone 快捷指令可把截图识别结果发到接口，再在收件箱里复核并转为正式账单。</Alert>
+                <ol class="flow-list">
+                    <li>快捷指令获取最新截图或分享中的图片。</li>
+                    <li>上传给 <code>POST /api/family-ledger/capture-drafts</code>。</li>
+                    <li>后端生成待确认账单，保留金额、商户、时间建议。</li>
+                    <li>在“截图收件箱”里一键转为正式支出。</li>
+                </ol>
+            </BodyTemplate>
+        </Card>
+    </div>
+</div>
