@@ -9,7 +9,10 @@ public interface ILedgerRepository
     Task<IReadOnlyList<LedgerCategory>> GetCategoriesAsync(CancellationToken cancellationToken = default);
     Task SaveCategoriesAsync(IEnumerable<LedgerCategory> categories, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<LedgerTransaction>> GetTransactionsAsync(CancellationToken cancellationToken = default);
+    Task<LedgerTransaction?> GetTransactionAsync(string id, CancellationToken cancellationToken = default);
     Task AddTransactionAsync(LedgerTransaction transaction, CancellationToken cancellationToken = default);
+    Task UpdateTransactionAsync(LedgerTransaction transaction, CancellationToken cancellationToken = default);
+    Task DeleteTransactionAsync(string id, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<CaptureDraft>> GetCaptureDraftsAsync(CancellationToken cancellationToken = default);
     Task<CaptureDraft?> GetCaptureDraftAsync(string id, CancellationToken cancellationToken = default);
     Task AddCaptureDraftAsync(CaptureDraft draft, CancellationToken cancellationToken = default);

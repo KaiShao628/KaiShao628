@@ -54,12 +54,44 @@ public sealed class InMemoryLedgerRepository : ILedgerRepository
         }
     }
 
+    public Task<LedgerTransaction?> GetTransactionAsync(string id, CancellationToken cancellationToken = default)
+    {
+        lock (_gate)
+        {
+            return Task.FromResult(_transactions.Where(x => x.Id == id).Select(Clone).FirstOrDefault());
+        }
+    }
+
     public Task AddTransactionAsync(LedgerTransaction transaction, CancellationToken cancellationToken = default)
     {
         lock (_gate)
         {
             _transactions.Add(Clone(transaction));
         }
+        return Task.CompletedTask;
+    }
+
+    public Task UpdateTransactionAsync(LedgerTransaction transaction, CancellationToken cancellationToken = default)
+    {
+        lock (_gate)
+        {
+            var index = _transactions.FindIndex(x => x.Id == transaction.Id);
+            if (index >= 0)
+            {
+                _transactions[index] = Clone(transaction);
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task DeleteTransactionAsync(string id, CancellationToken cancellationToken = default)
+    {
+        lock (_gate)
+        {
+            _transactions.RemoveAll(x => x.Id == id);
+        }
+
         return Task.CompletedTask;
     }
 
@@ -123,8 +155,13 @@ public sealed class InMemoryLedgerRepository : ILedgerRepository
         SuggestedCategoryId = item.SuggestedCategoryId,
         SuggestedAmount = item.SuggestedAmount,
         MerchantName = item.MerchantName,
+        ProductName = item.ProductName,
+        PaymentMethod = item.PaymentMethod,
         Source = item.Source,
         RecognizedText = item.RecognizedText,
+        ImageUrl = item.ImageUrl,
+        OriginalFileName = item.OriginalFileName,
+        RecognizedOccurredAt = item.RecognizedOccurredAt,
         CapturedAt = item.CapturedAt,
         Status = item.Status
     };

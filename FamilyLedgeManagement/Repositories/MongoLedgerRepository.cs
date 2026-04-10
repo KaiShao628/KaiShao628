@@ -49,8 +49,17 @@ public sealed class MongoLedgerRepository : ILedgerRepository
     public async Task<IReadOnlyList<LedgerTransaction>> GetTransactionsAsync(CancellationToken cancellationToken = default) =>
         await _transactions.Find(FilterDefinition<LedgerTransaction>.Empty).SortByDescending(x => x.OccurredAt).ToListAsync(cancellationToken);
 
+    public async Task<LedgerTransaction?> GetTransactionAsync(string id, CancellationToken cancellationToken = default) =>
+        await _transactions.Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
+
     public Task AddTransactionAsync(LedgerTransaction transaction, CancellationToken cancellationToken = default) =>
         _transactions.InsertOneAsync(transaction, cancellationToken: cancellationToken);
+
+    public Task UpdateTransactionAsync(LedgerTransaction transaction, CancellationToken cancellationToken = default) =>
+        _transactions.ReplaceOneAsync(x => x.Id == transaction.Id, transaction, cancellationToken: cancellationToken);
+
+    public Task DeleteTransactionAsync(string id, CancellationToken cancellationToken = default) =>
+        _transactions.DeleteOneAsync(x => x.Id == id, cancellationToken);
 
     public async Task<IReadOnlyList<CaptureDraft>> GetCaptureDraftsAsync(CancellationToken cancellationToken = default) =>
         await _captureDrafts.Find(FilterDefinition<CaptureDraft>.Empty).SortByDescending(x => x.CapturedAt).ToListAsync(cancellationToken);

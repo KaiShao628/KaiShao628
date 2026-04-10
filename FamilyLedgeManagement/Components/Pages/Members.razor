@@ -1,0 +1,59 @@
+﻿@page "/members"
+@attribute [TabItemOption(Text = "成员管理")]
+
+<PageTitle>成员管理</PageTitle>
+
+<div class="table-page">
+    <div class="table-page-header">
+        <div>
+            <h3>成员管理</h3>
+            <p>使用表格集中维护家庭成员，支持行选中、工具栏新增编辑删除，以及行内快捷操作。</p>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <Alert Color="Color.Success" ShowBar="true" ShowBorder="true">@Message</Alert>
+        }
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <Alert Color="Color.Danger" ShowBar="true" ShowBorder="true">@ErrorMessage</Alert>
+        }
+    </div>
+
+    <Table TItem="FamilyMemberEditorDto"
+           Items="@Items"
+           ShowToolbar="true"
+           ShowSearch="true"
+           ShowPagination="true"
+           PageItems="59"
+           PageItemsSource="@DefaultPageItemsSource"
+           ShowAddButton="true"
+           ShowEditButton="true"
+           ShowDeleteButton="true"
+           ShowDefaultButtons="true"
+           ShowExtendButtons="true"
+           ShowExtendEditButton="true"
+           ShowExtendDeleteButton="true"
+           IsBordered="true"
+           IsStriped="true"
+           ClickToSelect="true"
+           IsMultipleSelect="true"
+           IsKeepSelectedRows="true"
+           SelectedRows="@SelectedRows"
+           SelectedRowsChanged="@OnSelectedRowsChanged"
+           EditMode="EditMode.Popup"
+           AddModalTitle="新增成员"
+           EditModalTitle="编辑成员"
+           OnAddAsync="@OnAddAsync"
+           OnSaveAsync="@OnSaveAsync"
+           OnDeleteAsync="@OnDeleteAsync">
+        <TableColumns>
+            <TableColumn @bind-Field="@context.Id" Text="编号" Ignore="true" Readonly="true" />
+            <TableColumn @bind-Field="@context.Name" Text="成员名称" Searchable="true" />
+            <TableColumn @bind-Field="@context.Role" Text="角色" Searchable="true" />
+            <TableColumn @bind-Field="@context.AccentColor" Text="主题色" />
+        </TableColumns>
+    </Table>
+</div>
+
+
+

@@ -1,0 +1,59 @@
+﻿@page "/categories"
+@attribute [TabItemOption(Text = "分类管理")]
+
+<PageTitle>分类管理</PageTitle>
+
+<div class="table-page">
+    <div class="table-page-header">
+        <div>
+            <h3>分类管理</h3>
+            <p>分类列表使用整页表格展示，支持行选中、工具栏新增编辑删除，以及行内快捷操作。</p>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <Alert Color="Color.Success" ShowBar="true" ShowBorder="true">@Message</Alert>
+        }
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <Alert Color="Color.Danger" ShowBar="true" ShowBorder="true">@ErrorMessage</Alert>
+        }
+    </div>
+
+    <Table TItem="LedgerCategoryEditorDto"
+           Items="@Items"
+           ShowToolbar="true"
+           ShowSearch="true"
+           ShowPagination="true"
+           PageItems="59"
+           PageItemsSource="@DefaultPageItemsSource"
+           ShowAddButton="true"
+           ShowEditButton="true"
+           ShowDeleteButton="true"
+           ShowDefaultButtons="true"
+           ShowExtendButtons="true"
+           ShowExtendEditButton="true"
+           ShowExtendDeleteButton="true"
+           IsBordered="true"
+           IsStriped="true"
+           ClickToSelect="true"
+           IsMultipleSelect="true"
+           IsKeepSelectedRows="true"
+           SelectedRows="@SelectedRows"
+           SelectedRowsChanged="@OnSelectedRowsChanged"
+           EditMode="EditMode.Popup"
+           AddModalTitle="新增分类"
+           EditModalTitle="编辑分类"
+           OnAddAsync="@OnAddAsync"
+           OnSaveAsync="@OnSaveAsync"
+           OnDeleteAsync="@OnDeleteAsync">
+        <TableColumns>
+            <TableColumn @bind-Field="@context.Id" Text="编号" Ignore="true" Readonly="true" />
+            <TableColumn @bind-Field="@context.Name" Text="分类名称" Searchable="true" />
+            <TableColumn @bind-Field="@context.Kind" Text="类型" />
+            <TableColumn @bind-Field="@context.Color" Text="分类色" />
+        </TableColumns>
+    </Table>
+</div>
+
+
+
