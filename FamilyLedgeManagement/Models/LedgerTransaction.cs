@@ -1,15 +1,13 @@
-﻿namespace FamilyLedgeManagement.Models;
+﻿using DatabaseCommon.EntityBase;
+using FamilyLedgeManagement.Enums;
+
+namespace FamilyLedgeManagement.Models;
 
 /// <summary>
 /// 家庭账单实体。
 /// </summary>
-public sealed class LedgerTransaction
+public sealed class LedgerTransaction : Entity
 {
-    /// <summary>
-    /// 账单唯一标识。
-    /// </summary>
-    public string Id { get; set; } = Guid.NewGuid().ToString("N");
-
     /// <summary>
     /// 账单所属成员标识。
     /// </summary>

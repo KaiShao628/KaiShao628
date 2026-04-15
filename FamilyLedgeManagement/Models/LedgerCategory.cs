@@ -1,15 +1,13 @@
-﻿namespace FamilyLedgeManagement.Models;
+﻿using DatabaseCommon.EntityBase;
+using FamilyLedgeManagement.Enums;
+
+namespace FamilyLedgeManagement.Models;
 
 /// <summary>
 /// 家庭账单分类实体。
 /// </summary>
-public sealed class LedgerCategory
+public sealed class LedgerCategory : Entity
 {
-    /// <summary>
-    /// 分类唯一标识。
-    /// </summary>
-    public string Id { get; set; } = Guid.NewGuid().ToString("N");
-
     /// <summary>
     /// 分类名称。
     /// </summary>
@@ -24,4 +22,5 @@ public sealed class LedgerCategory
     /// 分类主题色。
     /// </summary>
     public string Color { get; set; } = "#dc6e2f";
+    public string Icon { get; internal set; }
 }

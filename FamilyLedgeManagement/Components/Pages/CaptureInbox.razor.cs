@@ -1,6 +1,6 @@
 ﻿using BootstrapBlazor.Components;
 using FamilyLedgeManagement.Dtos;
-using FamilyLedgeManagement.Models;
+using FamilyLedgeManagement.Enums;
 using FamilyLedgeManagement.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;

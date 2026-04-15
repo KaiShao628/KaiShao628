@@ -1,0 +1,35 @@
+﻿
+.text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 255px;
+    transform: translateY(1px);
+    -webkit-transform: translateY(1px);
+}
+
+
+::deep .tree .tree-item .tree-content {
+    padding: 0 !important;
+}
+
+.tree-tool-wrapper ::deep .widget {
+    display: inline;
+}
+
+    .tree-tool-wrapper ::deep .widget button {
+        display: block;
+        color: black;
+    }
+
+    .tree-tool-wrapper ::deep .widget .dropdown-menu {
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+        width: auto !important;
+    }
+
+.tree-tool-wrapper ::deep .dropdown-toggle {
+    padding: 0 5px;
+    color: #0071c1;
+}

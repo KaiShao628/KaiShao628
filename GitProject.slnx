@@ -1,5 +1,6 @@
-﻿<Solution>
+<Solution>
+    <Project Path="DatabaseCommon/DatabaseCommon.csproj" Id="a559f328-66b5-4167-9fb2-6e1be0ac77fc" />
     <Project Path="FamilyLedgeManagement/FamilyLedgeManagement.csproj" />
-  <Project Path="KLHomeManagement/KLHomeManagement.csproj" />
+    <Project Path="KLHomeManagement/KLHomeManagement.csproj" />
 </Solution>
 

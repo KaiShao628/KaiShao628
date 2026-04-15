@@ -1,0 +1,42 @@
+﻿@using FamilyLedgeManagement.Dtos.DictionaryDtos
+<div class="table-resizable-div" style="height:calc(100% + 0px)">
+    <div class="table-resizable-table">
+        <Table TItem="DictionaryValueDto" @ref="_dicValueTable" IsFixedHeader="true" IsMultipleSelect="true"
+               IsPagination="true" PageItemsSource="@Helpers.PageItemSource" SearchPlaceholderText="@_dicValueSearch"
+               IsStriped="true" IsBordered="true" ShowRefresh="true" ShowAdvancedSearch="false"
+               ShowToolbar="true" ShowDefaultButtons="true" ShowSearch="true" ShowSearchText="true" ShowToastAfterSaveOrDeleteModel="false"
+               ShowExtendButtons="@_showExtendButton" ShowExtendEditButton="@_editButton" ShowAddButton="@_addButton" ShowDeleteButton="@_deleteButton" ShowExtendDeleteButton="@_deleteButton"
+               ShowLoading="true" EditDialogSize="Size.ExtraLarge" ShowExtendEditButtonCallback="@((v)=>SetExtendButton(v," edit"))" ShowExtendDeleteButtonCallback="@(v=> SetExtendButton(v,"delete"))"
+               OnQueryAsync="OnQueryAsync" OnSaveAsync="OnSaveAsync" OnDeleteAsync="OnDeleteAsync" OnAddAsync="OnAddAsync">
+            <TableColumns>
+                <TableColumn @bind-Field="@context.Value" Text="@_value" TextWrap="true" HeaderTextWrap="true" ShowHeaderTooltip="true" />
+                <TableColumn @bind-Field="@context.CValue" Text="@_cValue" TextWrap="true" HeaderTextWrap="true" ShowHeaderTooltip="true" />
+                <TableColumn @bind-Field="@context.DictionaryName" Text="@_belongDic" TextWrap="true" HeaderTextWrap="true" ShowHeaderTooltip="true" />
+                <TableColumn @bind-Field="@context.IsUsed" Text="@_isUsed" TextWrap="true" HeaderTextWrap="true" ShowHeaderTooltip="true" />
+                <TableColumn @bind-Field="@context.UpdateTime" FormatString="yyyy-MM-dd" Text="@_updateTime" TextWrap="true" HeaderTextWrap="true" ShowHeaderTooltip="true" />
+            </TableColumns>
+            <EditTemplate>
+                <div class="row g-3 form-inline">
+                    <div class="col-12 col-sm-6">
+                        <BootstrapInput DisplayText="@_cValue" ShowLabel="true" @bind-Value="@context.CValue" maxlength="50" />
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <BootstrapInput DisplayText="@_value" ShowLabel="true" @bind-Value="@context.Value" maxlength="50" />
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <BootstrapInput DisplayText="@_dicValueCode" ShowLabel="true" IsDisabled="!string.IsNullOrWhiteSpace(context.Code)" @bind-Value="@context.Code" maxlength="50" />
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <Select IsFixedSearch="true" ShowSearch="true" Items="@SelectDicItems" DisplayText="@_belongDic" ShowLabel="true" @bind-Value="@context.DictionaryId" />
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <Switch DisplayText="@_isUsed" ShowLabel="true" @bind-Value="@context.IsUsed" OnText="启用" OffText="未启用" />
+                    </div>
+
+                </div>
+            </EditTemplate>
+        </Table>
+    </div>
+</div>
+
+

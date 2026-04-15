@@ -1,0 +1,42 @@
+﻿.bs-container {
+    width: 100%;
+    height: calc(100% + 45px);
+    display: flex;
+    padding: 5px;
+}
+
+.left-tree {
+    min-width: 325px;
+    height: calc(100% - 31px);
+    margin-right: 10px;
+    padding: 5px;
+    overflow: auto;
+    border: 1px solid #dddddd;
+}
+
+.right-table {
+    flex: 1;
+    height: calc(100% - 31px);
+    overflow: auto;
+}
+
+::deep .table-container {
+    padding-bottom: 35px !important;
+}
+
+.left-tree ::deep .tree .tree-item.active:before {
+    background-color: #60aff985;
+    border-radius: 5px;
+}
+
+
+/*
+        table 
+    */
+.right-table ::deep .table-fixed-column .table .fixed {
+    border-right: 1px solid rgb(222,226,230);
+}
+
+.right-table ::deep .table-fixed-column .table .fixed-right {
+    border-left: 1px solid rgb(222,226,230);
+}

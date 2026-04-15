@@ -1,4 +1,4 @@
-﻿namespace FamilyLedgeManagement.Models;
+﻿namespace FamilyLedgeManagement.Enums;
 
 /// <summary>
 /// 账单收支类型。

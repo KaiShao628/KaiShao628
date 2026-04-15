@@ -1,0 +1,24 @@
+﻿
+
+
+<div class="organization-wrapper">
+    <div class="col-12 col-sm-12 search-wrapper" style="margin-bottom:5px">
+        <BootstrapInputGroup>
+            <BootstrapInput OnEnterAsync="OnSearchAsync" TValue="string" PlaceHolder="输入字典Code" @bind-Value="@_codeVm" />
+            <Button Icon="fa fa-search" OnClickWithoutRender="()=>OnSearchAsync()"></Button>
+            @if (_addButton)
+            {
+                <Button Icon="fas fa-plus" OnClickWithoutRender="OnAddAsync"></Button>
+            }
+        </BootstrapInputGroup>
+    </div>
+    <div class="organization-tree-wrapper">
+        <CloudWarpper @ref="_cloudWarpper" WithoutDicWarpper="true">
+            <TreeView Items="TreeViewItems" OnTreeItemClick="OnTreeItemClick"></TreeView>
+        </CloudWarpper>
+    </div>
+</div>
+
+<EditDictionary @ref="@_editDic" AfterEdit="AfterEdit"></EditDictionary>
+
+

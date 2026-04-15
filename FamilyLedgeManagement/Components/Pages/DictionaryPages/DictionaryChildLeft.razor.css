@@ -1,0 +1,13 @@
+﻿.organization-wrapper {
+    height: 100%;
+}
+
+.search-wrapper {
+    border-bottom: 1px solid #eeeeee;
+    height: 35px;
+}
+
+.organization-tree-wrapper {
+    height: calc(100% - 40px);
+    overflow-y: auto;
+}

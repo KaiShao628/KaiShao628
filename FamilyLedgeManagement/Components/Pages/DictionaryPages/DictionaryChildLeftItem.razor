@@ -1,0 +1,29 @@
+﻿
+<span class="text" title="@DictionaryDto.DictionaryCode">@DictionaryDto.DictionaryCode</span>
+@if (!DictionaryDto.IsSystem)
+{
+    @if (EditButton || DeleteButton)
+    {
+        <div class="tree-tool-wrapper">
+            <DropdownWidget>
+                <DropdownWidgetItem Icon="fa fa-pencil" ShowArrow="false" Title="操作">
+                    <BodyTemplate>
+                        @if (EditButton)
+                        {
+                            <Button Color="Color.Link" Icon="fa fa-edit" OnClickWithoutRender="OnEditAsync" Text="编辑" />
+                        }
+                        @if (DeleteButton)
+                        {
+
+                            <Button Color="Color.Link" Icon="fa fa-remove" OnClickWithoutRender="OnDeleteAsync" Text="删除" />
+                        }
+                    </BodyTemplate>
+                </DropdownWidgetItem>
+            </DropdownWidget>
+        </div>
+    }
+}
+
+
+
+<EditDictionary @ref="@_editDic" AfterEdit="@AfterEditAsync"></EditDictionary>

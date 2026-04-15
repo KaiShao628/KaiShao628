@@ -1,15 +1,13 @@
-﻿namespace FamilyLedgeManagement.Models;
+﻿using DatabaseCommon.EntityBase;
+using FamilyLedgeManagement.Enums;
+
+namespace FamilyLedgeManagement.Models;
 
 /// <summary>
 /// 截图识别记录，保留截图、OCR 结果和识别出的记账字段。
 /// </summary>
-public sealed class CaptureDraft
+public sealed class CaptureDraft : Entity
 {
-    /// <summary>
-    /// 截图记录唯一标识。
-    /// </summary>
-    public string Id { get; set; } = Guid.NewGuid().ToString("N");
-
     /// <summary>
     /// 归属家庭成员标识。
     /// </summary>

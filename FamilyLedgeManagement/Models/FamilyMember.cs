@@ -1,15 +1,12 @@
-﻿namespace FamilyLedgeManagement.Models;
+﻿using DatabaseCommon.EntityBase;
+
+namespace FamilyLedgeManagement.Models;
 
 /// <summary>
 /// 家庭成员实体。
 /// </summary>
-public sealed class FamilyMember
+public sealed class FamilyMember : Entity
 {
-    /// <summary>
-    /// 成员唯一标识。
-    /// </summary>
-    public string Id { get; set; } = Guid.NewGuid().ToString("N");
-
     /// <summary>
     /// 成员显示名称。
     /// </summary>

@@ -19,47 +19,16 @@
         }
     </div>
 
-    <Table TItem="TransactionEditorDto"
-           Items="@Items"
-           ShowToolbar="true"
-           ShowSearch="true"
-           ShowPagination="true"
-           PageItems="59"
-           PageItemsSource="@DefaultPageItemsSource"
-           ShowAddButton="true"
-           ShowEditButton="true"
-           ShowDeleteButton="true"
-           ShowDefaultButtons="true"
-           ShowExtendButtons="true"
-           ShowExtendEditButton="true"
-           ShowExtendDeleteButton="true"
-           IsBordered="true"
-           IsStriped="true"
-           ClickToSelect="true"
-           IsMultipleSelect="true"
-           IsKeepSelectedRows="true"
-           SelectedRows="@SelectedRows"
-           SelectedRowsChanged="@OnSelectedRowsChanged"
-           EditMode="EditMode.Popup"
-           AddModalTitle="新增账单"
-           EditModalTitle="编辑账单"
-           OnAddAsync="@OnAddAsync"
-           OnSaveAsync="@OnSaveAsync"
-           OnDeleteAsync="@OnDeleteAsync">
+    <Table TItem="TransactionEditorDto" @ref="@_transactionTable" IsFixedHeader="true" IsPagination="true" PageItemsSource="@Helpers.PageItemSource" FixedExtendButtonsColumn="true"
+           SearchMode="SearchMode.Top" ShowSearchText="false" SearchDialogItemsPerRow="2" ShowLoading="true" ShowColumnList="true"
+           IsMultipleSelect="true" IsBordered="true" IsStriped="true" ClickToSelect="true" IsKeepSelectedRows="true" SelectedRows="@SelectedRows"
+           ShowSearch="true" ShowRefresh="true" ShowAdvancedSearch="false" AddModalTitle="新增账单" EditModalTitle="编辑账单"
+           ShowToolbar="true" ShowAddButton="true" ShowEditButton="true" ShowDeleteButton="true" ShowToastAfterSaveOrDeleteModel="false"
+           ShowDefaultButtons="true" ShowExtendButtons="true" ShowExtendEditButton="true" ShowExtendDeleteButton="true" OnResetSearchAsync="OnResetSearchAsync" AllowResizing="true"
+           OnQueryAsync="@OnQueryAsync" OnAddAsync="@OnAddAsync" OnSaveAsync="@OnSaveAsync" OnDeleteAsync="@OnDeleteAsync">
         <ToolbarTemplate>
-            <TableToolbarComponent TItem="TransactionEditorDto">
-                <div class="toolbar-row">
-                    <div>
-                        <label class="form-label">月份</label>
-                        <Select TValue="string" @bind-Value="SelectedMonthText">
-                            @foreach (var month in MonthOptions)
-                            {
-                                <SelectOption Value="@month" Text="@month" />
-                            }
-                        </Select>
-                    </div>
-                    <Button Text="刷新" Color="Color.Secondary" IsOutline="true" Icon="fa-solid fa-rotate" OnClick="@(_ => ReloadAsync())" />
-                </div>
+            <TableToolbarComponent>
+                <Select DisplayText="月份" ShowLabel="true" Items="@SelectMonthItems" @bind-Value="SelectedMonthText" />
             </TableToolbarComponent>
         </ToolbarTemplate>
         <TableColumns>

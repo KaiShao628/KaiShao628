@@ -1,12 +1,11 @@
 ﻿using FamilyLedgeManagement.Components;
+using FamilyLedgeManagement.Database;
 using FamilyLedgeManagement.Dtos;
-using FamilyLedgeManagement.Options;
-using FamilyLedgeManagement.Repositories;
 using FamilyLedgeManagement.Services;
+using FamilyLedgeManagement.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.Text;
 
@@ -14,22 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+KLFamilyLedgeAppSettingsHelper.Initialization();
+FamilyLedgeMongoDBClient.Instance.StartServer();
+
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddBootstrapBlazor();
 builder.Services.AddBootstrapBlazorTableExportService();
 builder.Services.AddBootstrapBlazorHtml2PdfService();
 builder.Services.Configure<HubOptions>(option => option.MaximumReceiveMessageSize = null);
-builder.Services.Configure<MongoDbOptions>(builder.Configuration.GetSection(MongoDbOptions.SectionName));
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
-builder.Services.AddSingleton<ILedgerRepository>(sp =>
-{
-    var options = sp.GetRequiredService<IOptions<MongoDbOptions>>().Value;
-    return options.IsConfigured
-        ? new MongoLedgerRepository(options)
-        : new InMemoryLedgerRepository();
-});
+builder.Services.AddProjectServices();
 builder.Services.AddScoped<StructuredCaptureRecognitionService>();
-builder.Services.AddScoped<LedgerService>();
 
 var app = builder.Build();
 
@@ -98,11 +92,4 @@ app.MapPost("/api/family-ledger/capture-drafts/upload", async (HttpRequest reque
     return Results.Created($"/api/family-ledger/transactions/{transaction.Id}", transaction);
 }).DisableAntiforgery();
 
-using (var scope = app.Services.CreateScope())
-{
-    var ledgerService = scope.ServiceProvider.GetRequiredService<LedgerService>();
-    await ledgerService.EnsureSeedDataAsync();
-}
-
 app.Run();
-

@@ -1,0 +1,42 @@
+﻿<style>
+    .span-class {
+        color: red;
+        position: relative;
+        top: 2px;
+        margin-right: 2px;
+        display: inline-block;
+        min-width: 5px
+    }
+
+    .label-class {
+        padding: 7px;
+        margin-bottom: 0;
+        padding-right: 10px;
+        width: 120px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: top;
+        display: inline-block
+    }
+</style>
+
+
+<Modal @ref="_modal" IsKeyboard="false">
+    <ModalDialog ShowHeaderCloseButton="true" ShowSaveButton="true" OnSaveAsync="OnSubmitAsync" IsCentered="true" Title="@Title">
+        <BodyTemplate>
+            <div class="row g-3 form-inline">
+                <div class="col-12 col-sm-6">
+                    <label class="label-class"><span class="span-class">*</span>@_dictionaryCode</label>
+                    <BootstrapInput DisplayText="@_dictionaryCode" ShowLabel="false" @bind-Value="@DictionaryDto.DictionaryCode" maxlength="50" />
+                </div>
+                <div class="col-12 col-sm-6">
+                    <label class="label-class"><span class="span-class">*</span>@_dictionaryName</label>
+                    <BootstrapInput DisplayText="@_dictionaryName" ShowLabel="false" @bind-Value="@DictionaryDto.DictionaryName" maxlength="50" />
+                </div>
+            </div>
+        </BodyTemplate>
+    </ModalDialog>
+</Modal>
+
+

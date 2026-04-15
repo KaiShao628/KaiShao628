@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using FamilyLedgeManagement.Models;
+using FamilyLedgeManagement.Enums;
 
 namespace FamilyLedgeManagement.Dtos;
 

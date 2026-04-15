@@ -1,4 +1,4 @@
-﻿namespace FamilyLedgeManagement.Models;
+﻿namespace FamilyLedgeManagement.Enums;
 
 /// <summary>
 /// 截图识别记录处理状态。
