@@ -3,17 +3,17 @@
 <CascadingValue Value="@_treeSelectedIdChange" Name="OnTreeSelectedIdChanged" IsFixed="false">
     <CascadingValue Value="@_openLoading" Name="OnOpenLoadding" IsFixed="false">
         <CascadingValue Value="@_closeLoading" Name="OnCloseLoadding" IsFixed="false">
-            <div class="bs-container">
-                <div class="left-tree">
-                    <DictionaryChildLeft />
-                </div>
+            <div class="dictionary-page">
+                <div class="bs-container">
+                    <div class="left-tree">
+                        <DictionaryChildLeft />
+                    </div>
 
-                <div>
-                    <DictionaryChildRight @ref="_rightTable" />
+                    <div class="right-table">
+                        <DictionaryChildRight @ref="_rightTable" />
+                    </div>
                 </div>
             </div>
         </CascadingValue>
     </CascadingValue>
 </CascadingValue>
-
-<Loading Show="Loading" />

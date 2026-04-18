@@ -23,12 +23,14 @@
 <body>
     <Routes @rendermode="new InteractiveServerRenderMode(false)" />
     <ReconnectorOutlet ReconnectInterval="5000" @rendermode="new InteractiveServerRenderMode(false)" />
-
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
     <script src="@Assets["_content/BootstrapBlazor/js/bootstrap.blazor.bundle.min.js"]"></script>
-    <script src="~/js/jquery-3.7.0.min.js"></script>
-    <script src="~/js/jsHelper.js"></script>
+    <script src="js/jquery-3.7.0.min.js"></script>
+    <script src="js/jsHelper.js"></script>
     <script src="_framework/blazor.web.js"></script>
 </body>
 
 </html>
 
+ 

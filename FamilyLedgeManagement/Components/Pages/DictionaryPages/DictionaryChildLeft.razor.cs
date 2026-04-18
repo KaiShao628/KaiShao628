@@ -25,8 +25,8 @@ namespace FamilyLedgeManagement.Components.Pages.DictionaryPages
         private List<TreeViewItem<DictionaryDto>>? TreeViewItems { get; set; }
         private List<TreeViewItem<DictionaryDto>>? TreeViewItemsSource { get; set; }
         private string? _codeVm = "";
-        private List<string> _menuBtnAuth;
-        private bool _addButton = false;
+        //private List<string> _menuBtnAuth;
+        private bool _addButton = true;
         protected override async Task OnInitializedAsync()
         {
             TreeViewItems = await GetTreeViewAsync();
@@ -44,8 +44,8 @@ namespace FamilyLedgeManagement.Components.Pages.DictionaryPages
                     {
                         [nameof(DictionaryChildLeftItem.DictionaryDto)] = y,
                         [nameof(DictionaryChildLeftItem.AfterEdit)] = EventCallback.Factory.Create(this, AfterEdit),
-                        [nameof(DictionaryChildLeftItem.EditButton)] = _menuBtnAuth.Contains("DicEdit"),
-                        [nameof(DictionaryChildLeftItem.DeleteButton)] = _menuBtnAuth.Contains("DicDelete"),
+                        [nameof(DictionaryChildLeftItem.EditButton)] = true,
+                        [nameof(DictionaryChildLeftItem.DeleteButton)] = true
                     }).Render();
                     return x;
                 }).ToList();

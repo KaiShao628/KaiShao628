@@ -6,11 +6,12 @@ namespace FamilyLedgeManagement.Components.Layout;
 public sealed partial class MainLayout
 {
     private bool UseTabSet { get; set; } = true;
-    private bool IsFixedHeader { get; set; } = true;
-    private bool IsFixedTabHeader { get; set; } = true;
+    private bool IsFixedHeader { get; set; } = false;
+    private bool IsFixedTabHeader { get; set; } = false;
     private bool IsFixedFooter { get; set; } = false;
     private bool IsFullSide { get; set; } = true;
     private bool ShowTabInHeader { get; set; } = true;
+    private string _nameUrl { get; set; } = "/images/Argo.png";
     private List<MenuItem>? Menus { get; set; }
 
     protected override void OnInitialized()

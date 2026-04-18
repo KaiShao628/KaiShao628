@@ -68,6 +68,10 @@ namespace DatabaseCommon.BaseRepository
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(entity.Id))
+                {
+                    entity.Id = Guid.NewGuid().ToString();
+                }
                 await Collection.InsertOneAsync(entity);
                 var model = await GetEntityAsync(entity.Id);
                 return model?.Id ?? "";

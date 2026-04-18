@@ -24,8 +24,8 @@ namespace FamilyLedgeManagement.Components.Pages.DictionaryPages
 
         //private UserInfoVO? _basicPlatformUserInfo;
         private Dictionary<string, string>? _languageResDic;
-        public string? _dictionaryCode;
-        public string? _dictionaryName;
+        public string? _dictionaryCode = "字典Code";
+        public string? _dictionaryName = "字典名称";
         public bool _isAdd = false;
         private DictionaryDto DictionaryDto { get; set; } = new DictionaryDto();
 

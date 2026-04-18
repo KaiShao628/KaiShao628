@@ -1,23 +1,56 @@
-﻿.bs-container {
+﻿.dictionary-page {
     width: 100%;
-    height: calc(100% + 45px);
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
     display: flex;
+    overflow: hidden;
+}
+
+.bs-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 10px;
     padding: 5px;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .left-tree {
-    min-width: 325px;
-    height: calc(100% - 31px);
-    margin-right: 10px;
+    flex: 0 1 clamp(220px, 24vw, 320px);
+    min-width: 220px;
+    max-width: 360px;
+    height: 100%;
     padding: 5px;
     overflow: auto;
     border: 1px solid #dddddd;
+    border-radius: 0.5rem;
+    background: #fff;
+    min-height: 0;
 }
 
 .right-table {
-    flex: 1;
-    height: calc(100% - 31px);
-    overflow: auto;
+    flex: 1 1 auto;
+    width: 0;
+    height: 100%;
+    overflow: hidden;
+    min-width: 0;
+    min-height: 0;
+    border: 1px solid #dddddd;
+    border-radius: 0.5rem;
+    background: #fff;
+    padding: 5px;
+}
+
+::deep .table-resizable-div,
+::deep .table-resizable-table,
+::deep .organization-wrapper {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
 }
 
 ::deep .table-container {
@@ -29,14 +62,32 @@
     border-radius: 5px;
 }
 
-
-/*
-        table 
-    */
 .right-table ::deep .table-fixed-column .table .fixed {
     border-right: 1px solid rgb(222,226,230);
 }
 
 .right-table ::deep .table-fixed-column .table .fixed-right {
     border-left: 1px solid rgb(222,226,230);
+}
+
+@media (max-width: 1200px) {
+    .bs-container {
+        flex-direction: column;
+    }
+
+    .left-tree,
+    .right-table {
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+    }
+
+    .left-tree {
+        min-height: 220px;
+    }
+
+    .right-table {
+        min-height: 0;
+    }
 }

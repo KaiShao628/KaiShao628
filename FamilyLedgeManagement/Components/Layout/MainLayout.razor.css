@@ -1,20 +1,4 @@
-.header-brand {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    margin-left: 1rem;
-}
-
-.header-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-
-.header-subtitle {
-    font-size: 0.82rem;
-    color: var(--bs-secondary);
-}
-
-.family-ledger-theme {
-    --bb-layout-header-bg: #fffaf2;
+.page {
+    width: 100vw;
+    height: 100vh;
 }

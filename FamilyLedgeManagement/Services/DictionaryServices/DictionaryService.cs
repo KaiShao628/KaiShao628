@@ -102,7 +102,7 @@ namespace FamilyLedgeManagement.Services.DictionaryServices
                 var entity = FamilyLedgeMapper.Map<DictionaryDto, DictionaryEntity>(dictionaryDto);
 
 
-                if (!string.IsNullOrWhiteSpace(await Repository.AddOneAsync(entity)))
+                if (string.IsNullOrWhiteSpace(await Repository.AddOneAsync(entity)))
                 {
                     return new ResponseResult<bool>(DbOpStatus.CreateError, "新增失败", false);
                 }

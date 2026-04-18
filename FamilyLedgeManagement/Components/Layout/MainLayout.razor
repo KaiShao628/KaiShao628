@@ -1,40 +1,27 @@
-@inherits LayoutComponentBase
+ï»¿@inherits LayoutComponentBase
 
-<BootstrapBlazorRoot>
-    <Layout ShowGotoTop="true" ShowCollapseBar="true" SideWidth="0" IsPage="true"
-            IsFullSide="@IsFullSide" IsFixedHeader="@IsFixedHeader" IsFixedFooter="@IsFixedFooter"
-            ShowSplitBar="true" SidebarMinWidth="220" SidebarMaxWidth="360"
-            TabStyle="TabStyle.Chrome" ShowToolbar="true" ShowTabContextMenu="true"
-            ShowTabInHeader="@ShowTabInHeader" ShowTabExtendButtons="false"
-            TabDefaultUrl="/" UseTabSet="@UseTabSet" IsFixedTabHeader="@IsFixedTabHeader"
-            AdditionalAssemblies="new[] { GetType().Assembly }" Menus="@Menus" Class="family-ledger-theme">
+<div class="page">
+    <Layout SideWidth="0" IsPage="true" ShowCollapseBar="false" IsAccordion="true" IsFixedHeader="true" Class="top-nav-layout">
         <Header>
             <div class="header-brand">
-                <span class="header-title">¼ÒÍ¥¼ÇÕËÏµÍ³</span>
-                <span class="header-subtitle">Bootstrap Blazor Ä£°å°æ</span>
+                <span class="header-title">å®¶åº­è®°è´¦ç³»ç»Ÿ</span>
+            </div>
+            <div class="top-nav-menu ms-3 flex-sm-fill">
+                <FamilyLedgeManagement.Components.Layout.TopMenu MenuItems="@Menus" />
+            </div>
+            <div class="top-nav-user">
+                <Logout ImageUrl="@_nameUrl" DisplayName="Jayce" UserName="Jayce">
+                </Logout>
             </div>
         </Header>
-        <Side>
-            <div class="layout-banner">
-                <img class="layout-logo" src="images/logo.png" />
-                <div class="layout-title">
-                    <span>Family Ledger</span>
-                </div>
-            </div>
-        </Side>
         <Main>
-            <CascadingValue Value="this" IsFixed="true">
-                @Body
-            </CascadingValue>
+            @Body
         </Main>
-        <Footer>
-            <div class="text-center flex-fill">¿ìËÙ¼ÇÕË¡¢½ØÍ¼ÊÕ¼şÏä¡¢¼ÒÍ¥¹²ÏíÕË±¾</div>
-        </Footer>
     </Layout>
-</BootstrapBlazorRoot>
+</div>
 
 <div id="blazor-error-ui">
-    ÏµÍ³·¢ÉúÎ´´¦ÀíÒì³£¡£
-    <a href="" class="reload">Ë¢ĞÂ</a>
-    <a class="dismiss">¡Á</a>
+    ç³»ç»Ÿå‘ç”Ÿæœªå¤„ç†å¼‚å¸¸ã€‚
+    <a href="" class="reload">åˆ·æ–°</a>
+    <a class="dismiss">Ã—</a>
 </div>
