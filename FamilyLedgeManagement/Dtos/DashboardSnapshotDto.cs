@@ -21,11 +21,6 @@ public sealed class DashboardSnapshotDto
     public decimal NetBalance { get; set; }
 
     /// <summary>
-    /// 待处理截图数量，保留给历史草稿兼容。
-    /// </summary>
-    public int PendingCaptureCount { get; set; }
-
-    /// <summary>
     /// 最近账单列表。
     /// </summary>
     public IReadOnlyList<TransactionListItemDto> RecentTransactions { get; set; } = [];

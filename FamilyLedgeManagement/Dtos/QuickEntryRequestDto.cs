@@ -11,7 +11,7 @@ public sealed class QuickEntryRequestDto
     /// <summary>
     /// 账单收支类型。
     /// </summary>
-    public TransactionKind Kind { get; set; } = TransactionKind.Expense;
+    public string Kind { get; set; } = string.Empty;
 
     /// <summary>
     /// 账单归属成员标识。

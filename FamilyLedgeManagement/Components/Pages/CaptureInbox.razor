@@ -13,7 +13,7 @@ else
         <Card HeaderText="图片上传入口" IsShadow="true">
             <BodyTemplate>
                 <Alert Color="Color.Info" ShowBorder="true" ShowBar="true">现在的流程是：选择截图后自动 OCR 识别金额、时间、商品和支付方式，再点击按钮直接保存到账单流水。</Alert>
-                <Alert Color="Color.Secondary" ShowBorder="true" ShowBar="true">当前页面不再生成草稿或收件箱中转，识别成功后会直接写入正式账单。</Alert>
+                <Alert Color="Color.Secondary" ShowBorder="true" ShowBar="true">当前页面只保留 OCR 识别和正式入账，不再生成草稿或经过收件箱确认。</Alert>
 
                 <ValidateForm Model="@UploadRequest" OnValidSubmit="SaveUploadAsync">
                     <div class="form-grid">
@@ -114,7 +114,7 @@ else
 
         <Card HeaderText="iPhone / 快捷指令接入" IsShadow="true">
             <BodyTemplate>
-                <Alert Color="Color.Light" ShowBorder="true" ShowBar="true">推荐链路：截图或分享图片 -> 快捷指令 -> <code>POST /api/family-ledger/capture-drafts/upload</code> -> OCR 识别 -> 直接保存正式账单。</Alert>
+                <Alert Color="Color.Light" ShowBorder="true" ShowBar="true">推荐链路：截图或分享图片 -> 快捷指令 -> <code>POST /api/family-ledger/capture/upload</code> -> OCR 识别 -> 直接保存正式账单。</Alert>
                 <ol class="flow-list">
                     <li>快捷指令通过 <code>multipart/form-data</code> 上传图片字段 <code>file</code>。</li>
                     <li>同时可提交 <code>memberId</code>、<code>suggestedCategoryId</code>、<code>suggestedAmount</code>、<code>merchantName</code>。</li>

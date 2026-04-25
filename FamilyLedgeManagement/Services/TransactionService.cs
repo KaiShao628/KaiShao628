@@ -1,6 +1,15 @@
-﻿using FamilyLedgeManagement.Enums;
+﻿using FamilyLedgeManagement.Database;
+using FamilyLedgeManagement.Dtos;
+using FamilyLedgeManagement.Dtos.BaseDtos;
+using FamilyLedgeManagement.Dtos.DictionaryDtos;
+using FamilyLedgeManagement.Enums;
+using FamilyLedgeManagement.IRepositories.IDictionaryRepositories;
+using FamilyLedgeManagement.IRepositories.IFamilyMemberRepositories;
+using FamilyLedgeManagement.IRepositories.ILedgerCategoryRepositories;
 using FamilyLedgeManagement.IRepositories.ITransactionRepositories;
 using FamilyLedgeManagement.Models;
+using FamilyLedgeManagement.Models.DictionaryModels;
+using FamilyLedgeManagement.Utilities;
 
 namespace FamilyLedgeManagement.Services
 {
@@ -9,6 +18,10 @@ namespace FamilyLedgeManagement.Services
     /// </summary>
     public class TransactionService : ServiceBase<ITransactionRepository>
     {
+        private readonly IFamilyMemberRepository _familyMemberRepository = FamilyLedgeMongoDBClient.Instance.GetRepository<IFamilyMemberRepository>();
+        private readonly ILedgerCategoryRepository _ledgerCategoryRepository = FamilyLedgeMongoDBClient.Instance.GetRepository<ILedgerCategoryRepository>();
+        private readonly IDictionaryValueRepository _dictionaryValueRepository = FamilyLedgeMongoDBClient.Instance.GetRepository<IDictionaryValueRepository>();
+
         /// <summary>
         /// 获取全部未删除账单。
         /// </summary>
@@ -100,7 +113,7 @@ namespace FamilyLedgeManagement.Services
                 Id = Guid.NewGuid().ToString("N"),
                 MemberId = "member-kai",
                 CategoryId = "cat-food",
-                Kind = TransactionKind.Expense,
+                Kind = "Expense",
                 Amount = 58,
                 MerchantName = "晚餐",
                 PaymentMethod = "微信支付",
@@ -115,7 +128,7 @@ namespace FamilyLedgeManagement.Services
                 Id = Guid.NewGuid().ToString("N"),
                 MemberId = "member-ling",
                 CategoryId = "cat-grocery",
-                Kind = TransactionKind.Expense,
+                Kind = "Expense",
                 Amount = 126.50m,
                 MerchantName = "盒马",
                 PaymentMethod = "支付宝",
@@ -130,7 +143,7 @@ namespace FamilyLedgeManagement.Services
                 Id = Guid.NewGuid().ToString("N"),
                 MemberId = "member-public",
                 CategoryId = "cat-home",
-                Kind = TransactionKind.Expense,
+                Kind = "Expense",
                 Amount = 89.90m,
                 MerchantName = "日用品补货",
                 PaymentMethod = "银行卡",
@@ -145,7 +158,7 @@ namespace FamilyLedgeManagement.Services
                 Id = Guid.NewGuid().ToString("N"),
                 MemberId = "member-kai",
                 CategoryId = "cat-salary",
-                Kind = TransactionKind.Income,
+                Kind = "Income",
                 Amount = 5600m,
                 MerchantName = "工资到账",
                 PaymentMethod = "银行卡",
@@ -156,5 +169,30 @@ namespace FamilyLedgeManagement.Services
                 UpdateTime = new DateTime(now.Year, now.Month, 1, 1, 0, 0, DateTimeKind.Utc)
             }
         ];
+
+        public async Task<ReturnResult<TableResultDto<TransactionListItemDto>>> OnQueryAsync(FilterDto filterDto)
+        {
+            var membersDic = await _familyMemberRepository.GetEntityToIdEntityDicAsync();
+            var categoriesDic = await _ledgerCategoryRepository.GetEntityToIdEntityDicAsync();
+            var dictionaryValueDic = await _dictionaryValueRepository.GetEntityToIdEntityDicAsync();
+            var totalPages = 0;
+            var resultItems = new List<TransactionEditorDto>();
+            var transactions = await Repository.GetEntityListByExpressionAsync(x => !x.IsDeleted && x.OccurredAt >= filterDto.TransactionStratDate &&
+                                                                                    x.OccurredAt <= filterDto.TransactionEndDate);
+            totalPages = transactions.Count;
+
+            var paginationList = transactions.OrderByDescending(x => x.CreateTime).Skip((filterDto.PageIndex - 1) * filterDto.PageSize).Take(filterDto.PageSize).ToList();
+
+            var dtoList = paginationList.Select(x => Helpers.MapTransaction(x, membersDic, categoriesDic, dictionaryValueDic)).ToList();
+
+            var result = new TableResultDto<TransactionListItemDto>()
+            {
+                Result = dtoList,
+                TotalPages = totalPages,
+            };
+
+            return new ResponseResult<TableResultDto<TransactionListItemDto>>(DbOpStatus.Success, result);
+
+        }
     }
 }

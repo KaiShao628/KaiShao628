@@ -1,34 +1,21 @@
-﻿using FamilyLedgeManagement.Database;
+using FamilyLedgeManagement.Database;
 using FamilyLedgeManagement.Dtos;
 using FamilyLedgeManagement.Enums;
-using FamilyLedgeManagement.IRepositories.ICaptureDraftRepositories;
 using FamilyLedgeManagement.IRepositories.IFamilyMemberRepositories;
 using FamilyLedgeManagement.IRepositories.ILedgerCategoryRepositories;
 using FamilyLedgeManagement.IRepositories.ITransactionRepositories;
 using FamilyLedgeManagement.Models;
-using FamilyLedgeManagement.Repositories.TransactionRepositories;
 
 namespace FamilyLedgeManagement.Services
 {
     /// <summary>
-    /// 页面与接口使用的聚合业务服务，内部组合各个 DB 层服务。
+    /// 页面与接口使用的聚合业务服务，负责组合成员、分类、账单与 OCR 识别能力。
     /// </summary>
     public class LedgerService
     {
-        private readonly ICaptureDraftRepository _captureDraftRepository = FamilyLedgeMongoDBClient.Instance.GetRepository<ICaptureDraftRepository>();
         private readonly IFamilyMemberRepository _familyMemberRepository = FamilyLedgeMongoDBClient.Instance.GetRepository<IFamilyMemberRepository>();
         private readonly ILedgerCategoryRepository _ledgerCategoryRepository = FamilyLedgeMongoDBClient.Instance.GetRepository<ILedgerCategoryRepository>();
         private readonly ITransactionRepository _transactionRepository = FamilyLedgeMongoDBClient.Instance.GetRepository<ITransactionRepository>();
-
-        private readonly FamilyMemberService _familyMemberService;
-        private readonly CaptureDraftService _captureDraftService;
-        private readonly TransactionService _transactionService;
-        private readonly LedgerCategoryService _ledgerCategoryService;
-
-        /// <summary>
-        /// 截图上传允许的最大文件大小。
-        /// </summary>
-        private const long MaxCaptureImageSize = 10 * 1024 * 1024;
 
         /// <summary>
         /// 系统内置常用支付方式。
@@ -42,6 +29,9 @@ namespace FamilyLedgeManagement.Services
             "家庭公共账户"
         ];
 
+        private readonly FamilyMemberService _familyMemberService;
+        private readonly LedgerCategoryService _ledgerCategoryService;
+        private readonly TransactionService _transactionService;
         private readonly StructuredCaptureRecognitionService _captureRecognitionService;
         private readonly TimeProvider _timeProvider;
         private readonly string _captureImageDirectory;
@@ -49,47 +39,21 @@ namespace FamilyLedgeManagement.Services
         /// <summary>
         /// 构造聚合业务服务。
         /// </summary>
-        public LedgerService(FamilyMemberService familyMemberService, CaptureDraftService captureDraftService,
-            TransactionService transactionService, LedgerCategoryService ledgerCategoryService, StructuredCaptureRecognitionService captureRecognitionService, TimeProvider timeProvider, IWebHostEnvironment webHostEnvironment)
+        public LedgerService(
+            FamilyMemberService familyMemberService,
+            LedgerCategoryService ledgerCategoryService,
+            TransactionService transactionService,
+            StructuredCaptureRecognitionService captureRecognitionService,
+            TimeProvider timeProvider,
+            IWebHostEnvironment webHostEnvironment)
         {
             _familyMemberService = familyMemberService;
-            _captureDraftService = captureDraftService;
-            _transactionService = transactionService;
             _ledgerCategoryService = ledgerCategoryService;
+            _transactionService = transactionService;
             _captureRecognitionService = captureRecognitionService;
             _timeProvider = timeProvider;
-            _captureImageDirectory = Path.Combine(webHostEnvironment.ContentRootPath, "uploads", "capture-drafts");
+            _captureImageDirectory = Path.Combine(webHostEnvironment.ContentRootPath, "uploads", "captures");
         }
-
-        /// <summary>
-        /// 初始化成员、分类和账单种子数据。
-        /// </summary>
-        //public async Task EnsureSeedDataAsync(CancellationToken cancellationToken = default)
-        //{
-        //    if (!(await _familyMemberRepository.GetEntityListAsync()).Any())
-        //    {
-        //        foreach (var member in _familyMemberService.BuildDefaultMembers())
-        //        {
-        //            await _familyMemberService.AddAsync(member);
-        //        }
-        //    }
-
-        //    if (!(await _ledgerCategoryService.GetAllAsync()).Any())
-        //    {
-        //        foreach (var category in _ledgerCategoryService.BuildDefaultCategories())
-        //        {
-        //            await _ledgerCategoryService.AddAsync(category);
-        //        }
-        //    }
-
-        //    if (!(await _transactionService.GetAllAsync()).Any())
-        //    {
-        //        foreach (var transaction in _transactionService.BuildDefaultTransactions(_timeProvider.GetLocalNow()))
-        //        {
-        //            await _transactionService.AddAsync(transaction);
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// 获取首页概览数据。
@@ -99,20 +63,29 @@ namespace FamilyLedgeManagement.Services
             var members = await _familyMemberService.GetAllAsync();
             var categories = await _ledgerCategoryService.GetAllAsync();
             var transactions = await _transactionService.GetAllAsync();
-            var drafts = await _captureDraftService.GetAllAsync();
 
             var now = _timeProvider.GetLocalNow();
-            var monthTransactions = transactions.Where(x => x.OccurredAt.Year == now.Year && x.OccurredAt.Month == now.Month).ToList();
-            var monthExpense = monthTransactions.Where(x => x.Kind == TransactionKind.Expense).Sum(x => x.Amount);
-            var monthIncome = monthTransactions.Where(x => x.Kind == TransactionKind.Income).Sum(x => x.Amount);
+            var monthTransactions = transactions
+                .Where(x => x.OccurredAt.Year == now.Year && x.OccurredAt.Month == now.Month)
+                .ToList();
+
+            var monthExpense = monthTransactions
+                .Where(x => x.Kind == "")
+                .Sum(x => x.Amount);
+
+            var monthIncome = monthTransactions
+                .Where(x => x.Kind == "")
+                .Sum(x => x.Amount);
 
             return new DashboardSnapshotDto
             {
                 MonthExpense = monthExpense,
                 MonthIncome = monthIncome,
                 NetBalance = monthIncome - monthExpense,
-                PendingCaptureCount = drafts.Count(x => x.Status == CaptureDraftStatus.Pending),
-                RecentTransactions = transactions.Take(6).Select(x => MapTransaction(x, members, categories)).ToList()
+                RecentTransactions = transactions
+                    .Take(6)
+                    .Select(x => MapTransaction(x, members, categories))
+                    .ToList()
             };
         }
 
@@ -121,8 +94,8 @@ namespace FamilyLedgeManagement.Services
         /// </summary>
         public async Task<QuickEntryContextDto> GetQuickEntryContextAsync(CancellationToken cancellationToken = default)
         {
-            var members = await _familyMemberService.GetAllAsync();
-            var categories = await _ledgerCategoryService.GetAllAsync();
+            var members = await _familyMemberRepository.GetEntityListAsync();
+            var categories = await _ledgerCategoryRepository.GetEntityListAsync();
 
             return new QuickEntryContextDto
             {
@@ -199,7 +172,7 @@ namespace FamilyLedgeManagement.Services
             {
                 Id = string.IsNullOrWhiteSpace(request.Id) ? Guid.NewGuid().ToString("N") : request.Id,
                 Name = normalizedName,
-                Kind = request.Kind,
+                Kind = "",
                 Color = normalizedColor
             };
 
@@ -227,18 +200,8 @@ namespace FamilyLedgeManagement.Services
             var members = await _familyMemberService.GetAllAsync();
             var categories = await _ledgerCategoryService.GetAllAsync();
             var transactions = await _transactionService.GetByMonthAsync(month.Year, month.Month);
-            return transactions.Select(x => MapTransaction(x, members, categories)).ToList();
-        }
 
-        /// <summary>
-        /// 获取截图草稿列表。
-        /// </summary>
-        public async Task<IReadOnlyList<CaptureDraftListItemDto>> GetCaptureDraftsAsync(CancellationToken cancellationToken = default)
-        {
-            var members = await _familyMemberService.GetAllAsync();
-            var categories = await _ledgerCategoryService.GetAllAsync();
-            var drafts = await _captureDraftService.GetAllAsync();
-            return drafts.Select(x => MapDraft(x, members, categories)).ToList();
+            return transactions.Select(x => MapTransaction(x, members, categories)).ToList();
         }
 
         /// <summary>
@@ -271,13 +234,14 @@ namespace FamilyLedgeManagement.Services
 
             var id = await _transactionService.AddAsync(transaction);
             transaction.Id = id;
+
             return MapTransaction(transaction, members, categories);
         }
 
         /// <summary>
         /// 新增或更新正式账单。
         /// </summary>
-        public async Task SaveTransactionAsync(TransactionEditorDto request, CancellationToken cancellationToken = default)
+        public async Task SaveTransactionAsync(TransactionListItemDto request, CancellationToken cancellationToken = default)
         {
             var categories = await _ledgerCategoryService.GetAllAsync();
             var category = categories.First(x => x.Id == request.CategoryId);
@@ -313,7 +277,7 @@ namespace FamilyLedgeManagement.Services
             current.MerchantName = request.MerchantName.Trim();
             current.PaymentMethod = request.PaymentMethod.Trim();
             current.Note = request.Note.Trim();
-            current.OccurredAt = request.OccurredAt ?? current.OccurredAt;
+            current.OccurredAt = current.OccurredAt;
 
             await _transactionService.UpdateAsync(current);
         }
@@ -335,45 +299,30 @@ namespace FamilyLedgeManagement.Services
             string existingMerchant,
             CancellationToken cancellationToken = default)
         {
-            var tempDirectory = Path.Combine(_captureImageDirectory, "preview");
-            Directory.CreateDirectory(tempDirectory);
+            var result = await AnalyzeCaptureAsync(
+                imageStream,
+                originalFileName,
+                existingText,
+                existingAmount,
+                existingMerchant,
+                cancellationToken);
 
-            var extension = Path.GetExtension(originalFileName);
-            var normalizedExtension = string.IsNullOrWhiteSpace(extension) ? ".png" : extension.ToLowerInvariant();
-            var tempFilePath = Path.Combine(tempDirectory, $"{Guid.NewGuid():N}{normalizedExtension}");
-
-            await using (var targetStream = File.Create(tempFilePath))
+            return new CaptureRecognitionPreviewDto
             {
-                await imageStream.CopyToAsync(targetStream, cancellationToken);
-            }
-
-            try
-            {
-                var result = await _captureRecognitionService.AnalyzeAsync(tempFilePath, existingText, existingAmount, existingMerchant, cancellationToken);
-                return new CaptureRecognitionPreviewDto
-                {
-                    SuggestedAmount = result.SuggestedAmount,
-                    MerchantName = result.MerchantName,
-                    ProductName = result.ProductName,
-                    PaymentMethod = result.PaymentMethod,
-                    RecognizedText = result.RecognizedText,
-                    OccurredAt = result.OccurredAt
-                };
-            }
-            finally
-            {
-                if (File.Exists(tempFilePath))
-                {
-                    File.Delete(tempFilePath);
-                }
-            }
+                SuggestedAmount = result.SuggestedAmount,
+                MerchantName = result.MerchantName,
+                ProductName = result.ProductName,
+                PaymentMethod = result.PaymentMethod,
+                RecognizedText = result.RecognizedText,
+                OccurredAt = result.OccurredAt
+            };
         }
 
         /// <summary>
         /// 识别截图并直接保存正式账单。
         /// </summary>
         public async Task<TransactionListItemDto> AddTransactionFromCaptureAsync(
-            CaptureDraftRequestDto request,
+            CaptureEntryRequestDto request,
             Stream imageStream,
             string originalFileName,
             CancellationToken cancellationToken = default)
@@ -398,7 +347,7 @@ namespace FamilyLedgeManagement.Services
 
             return await AddTransactionAsync(new QuickEntryRequestDto
             {
-                Kind = TransactionKind.Expense,
+                Kind = "TransactionKind.Expense",
                 MemberId = request.MemberId,
                 CategoryId = request.SuggestedCategoryId,
                 Amount = amount.Value,
@@ -431,7 +380,12 @@ namespace FamilyLedgeManagement.Services
 
             try
             {
-                return await _captureRecognitionService.AnalyzeAsync(tempFilePath, existingText, existingAmount, existingMerchant, cancellationToken);
+                return await _captureRecognitionService.AnalyzeAsync(
+                    tempFilePath,
+                    existingText,
+                    existingAmount,
+                    existingMerchant,
+                    cancellationToken);
             }
             finally
             {
@@ -445,14 +399,17 @@ namespace FamilyLedgeManagement.Services
         private static string BuildCaptureNote(string source, string merchantName, string productName)
         {
             var parts = new List<string> { $"截图识别：{source}" };
+
             if (!string.IsNullOrWhiteSpace(merchantName))
             {
                 parts.Add($"商户 {merchantName}");
             }
+
             if (!string.IsNullOrWhiteSpace(productName))
             {
                 parts.Add($"商品 {productName}");
             }
+
             return string.Join("；", parts);
         }
 
@@ -468,11 +425,14 @@ namespace FamilyLedgeManagement.Services
         {
             Id = category.Id,
             Name = category.Name,
-            Kind = category.Kind,
+            Kind = "",
             Color = category.Color
         };
 
-        private static TransactionListItemDto MapTransaction(LedgerTransaction transaction, IReadOnlyList<FamilyMember> members, IReadOnlyList<LedgerCategory> categories)
+        private static TransactionListItemDto MapTransaction(
+            LedgerTransaction transaction,
+            IReadOnlyList<FamilyMember> members,
+            IReadOnlyList<LedgerCategory> categories)
         {
             var memberName = members.FirstOrDefault(x => x.Id == transaction.MemberId)?.Name ?? "未分配成员";
             var categoryName = categories.FirstOrDefault(x => x.Id == transaction.CategoryId)?.Name ?? "未分类";
@@ -490,30 +450,6 @@ namespace FamilyLedgeManagement.Services
                 PaymentMethod = string.IsNullOrWhiteSpace(transaction.PaymentMethod) ? "未填写" : transaction.PaymentMethod,
                 Note = string.IsNullOrWhiteSpace(transaction.Note) ? "-" : transaction.Note,
                 OccurredAt = transaction.OccurredAt
-            };
-        }
-
-        private static CaptureDraftListItemDto MapDraft(CaptureDraft draft, IReadOnlyList<FamilyMember> members, IReadOnlyList<LedgerCategory> categories)
-        {
-            var memberName = members.FirstOrDefault(x => x.Id == draft.MemberId)?.Name ?? "未指定成员";
-            var categoryName = categories.FirstOrDefault(x => x.Id == draft.SuggestedCategoryId)?.Name ?? "待分类";
-
-            return new CaptureDraftListItemDto
-            {
-                Id = draft.Id,
-                MemberName = memberName,
-                CategoryName = categoryName,
-                SuggestedAmount = draft.SuggestedAmount,
-                MerchantName = string.IsNullOrWhiteSpace(draft.MerchantName) ? "待识别商户" : draft.MerchantName,
-                ProductName = draft.ProductName,
-                PaymentMethod = draft.PaymentMethod,
-                Source = draft.Source,
-                RecognizedText = draft.RecognizedText,
-                ImageUrl = draft.ImageUrl,
-                OriginalFileName = draft.OriginalFileName,
-                RecognizedOccurredAt = draft.RecognizedOccurredAt,
-                CapturedAt = draft.CapturedAt,
-                Status = draft.Status
             };
         }
     }

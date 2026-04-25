@@ -20,7 +20,7 @@ public sealed class LedgerCategoryDto
     /// <summary>
     /// 分类收支类型。
     /// </summary>
-    public TransactionKind Kind { get; set; }
+    public string Kind { get; set; } = string.Empty;
 
     /// <summary>
     /// 分类主题色。

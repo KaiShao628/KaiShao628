@@ -4,6 +4,7 @@ using FamilyLedgeManagement.Dtos.DictionaryDtos;
 using FamilyLedgeManagement.Services.DictionaryServices;
 using FamilyLedgeManagement.Utilities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 
 namespace FamilyLedgeManagement.Components.Pages.DictionaryPages
@@ -15,6 +16,10 @@ namespace FamilyLedgeManagement.Components.Pages.DictionaryPages
 
         [Inject]
         private DictionaryValueService DictionaryValueService { get; set; } = default!;
+
+        //[Inject]
+        //private IStringLocalizer<DictionaryChildRight> Localizer { get; set; }
+
         private Table<DictionaryValueDto>? _dicValueTable;
 
         private string? _dicId;
@@ -42,13 +47,13 @@ namespace FamilyLedgeManagement.Components.Pages.DictionaryPages
             //_basicPlatformUserInfo = await LocalService.GetItem<UserInfoVO>(ProjectStorageEnum.ProjectUser);
             //_menuBtnAuth = await LocalService.GetItem<List<string>>(ProjectStorageEnum.ProjectMenuBtnAuth);
             //_languageResDic = await LocalService.GetItem<Dictionary<string, string>>(ProjectStorageEnum.ProjectLanguage);
-            //_dicValueSearch = Helpers.GetLanguage(_languageResDic, "DicValueSearch");
-            //_value = Helpers.GetLanguage(_languageResDic, "Value");
-            //_cValue = Helpers.GetLanguage(_languageResDic, "CValue");
-            //_isUsed = Helpers.GetLanguage(_languageResDic, "IsUsed");
-            //_updateTime = Helpers.GetLanguage(_languageResDic, "UpdateTime");
-            //_belongDic = Helpers.GetLanguage(_languageResDic, "BelongDic");
-            //_dicValueCode = Helpers.GetLanguage(_languageResDic, "DicValueCode");
+            _dicValueSearch = Localizer["DicValueSearch"];
+            _value = Localizer["Value"];
+            _cValue = Localizer["CValue"];
+            _isUsed = Localizer["IsUsed"];
+            _updateTime = Localizer["UpdateTime"];
+            _belongDic = Localizer["BelongDic"];
+            _dicValueCode = Localizer["DicValueCode"];
 
             SelectDicItems = await DictionaryService.GetAllSelectedWithoutAllAsync();
 

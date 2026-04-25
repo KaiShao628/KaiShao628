@@ -1,12 +1,10 @@
 ﻿using DatabaseCommon.MongoDB;
-using FamilyLedgeManagement.IRepositories.ICaptureDraftRepositories;
 using FamilyLedgeManagement.IRepositories.IDictionaryRepositories;
 using FamilyLedgeManagement.IRepositories.IFamilyMemberRepositories;
 using FamilyLedgeManagement.IRepositories.ILedgerCategoryRepositories;
 using FamilyLedgeManagement.IRepositories.ITransactionRepositories;
 using FamilyLedgeManagement.Models;
 using FamilyLedgeManagement.Models.DictionaryModels;
-using FamilyLedgeManagement.Repositories.CaptureDraftRepositories;
 using FamilyLedgeManagement.Repositories.DictionaryRepositories;
 using FamilyLedgeManagement.Repositories.FamilyMemberRepositories;
 using FamilyLedgeManagement.Repositories.LedgerCategoryRepositories;
@@ -40,7 +38,6 @@ namespace FamilyLedgeManagement.Database
         {
             RegisterRepository<IFamilyMemberRepository>(new FamilyMemberRepository());
             RegisterRepository<ILedgerCategoryRepository>(new LedgerCategoryRepository());
-            RegisterRepository<ICaptureDraftRepository>(new CaptureDraftRepository());
             RegisterRepository<ITransactionRepository>(new TransactionRepository());
             RegisterRepository<IDictionaryRepository>(new DictionaryRepository());
             RegisterRepository<IDictionaryValueRepository>(new DictionaryValueRepository());
@@ -53,11 +50,6 @@ namespace FamilyLedgeManagement.Database
         //初始化默认数据，如默认账单分类等
         protected override async void PrepareDefaultData()
         {
-            var captureDraftRepo = GetRepository<ICaptureDraftRepository>();
-            var familyMemberRepo = GetRepository<IFamilyMemberRepository>();
-            var transactionRepo = GetRepository<ITransactionRepository>();
-            var categoryRepo = GetRepository<ILedgerCategoryRepository>();
-
             await InitDictionaryAndDicValue();
         }
 

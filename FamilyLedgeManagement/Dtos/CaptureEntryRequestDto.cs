@@ -1,9 +1,9 @@
-﻿namespace FamilyLedgeManagement.Dtos;
+namespace FamilyLedgeManagement.Dtos;
 
 /// <summary>
 /// 截图记账上传请求 DTO。
 /// </summary>
-public sealed class CaptureDraftRequestDto
+public sealed class CaptureEntryRequestDto
 {
     /// <summary>
     /// 账单归属成员标识。

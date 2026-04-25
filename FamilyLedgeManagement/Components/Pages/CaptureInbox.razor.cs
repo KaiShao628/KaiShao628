@@ -13,7 +13,7 @@ public partial class CaptureInbox
     private LedgerService LedgerService { get; set; } = default!;
 
     protected QuickEntryContextDto? Context { get; set; }
-    protected CaptureDraftRequestDto UploadRequest { get; set; } = new();
+    protected CaptureEntryRequestDto UploadRequest { get; set; } = new();
     protected CaptureRecognitionPreviewDto? RecognitionPreview { get; set; }
     protected TransactionListItemDto? LatestSavedTransaction { get; set; }
     protected UploadFile? SelectedUploadFile { get; set; }
@@ -22,7 +22,7 @@ public partial class CaptureInbox
     protected string? ErrorMessage { get; set; }
 
     protected IEnumerable<LedgerCategoryDto> ExpenseCategories =>
-        Context?.Categories.Where(x => x.Kind == TransactionKind.Expense) ?? Enumerable.Empty<LedgerCategoryDto>();
+        Context?.Categories.Where(x => x.Kind == "") ?? Enumerable.Empty<LedgerCategoryDto>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -90,7 +90,7 @@ public partial class CaptureInbox
 
             Message = preview.SuggestedAmount is null
                 ? "图片已完成预识别，但暂时没有识别出金额，请检查识别文本。"
-                : $"OCR 已识别金额 {preview.SuggestedAmount:F2}，请确认后再上传到收件箱。";
+                : $"OCR 已识别金额 {preview.SuggestedAmount:F2}，现在可以直接保存到账单流水。";
 
             StateHasChanged();
         }
@@ -107,10 +107,10 @@ public partial class CaptureInbox
             return;
         }
 
-        UploadRequest = new CaptureDraftRequestDto
+        UploadRequest = new CaptureEntryRequestDto
         {
-            MemberId = Context.Members.First().Id,
-            SuggestedCategoryId = ExpenseCategories.First().Id,
+            MemberId = Context.Members.FirstOrDefault().Id,
+            //SuggestedCategoryId = ExpenseCategories.FirstOrDefault().Id,
             Source = "页面上传",
             CapturedAt = DateTimeOffset.Now
         };

@@ -24,7 +24,7 @@ public sealed class LedgerCategoryEditorDto
     /// 分类收支类型。
     /// </summary>
     [Required(ErrorMessage = "请选择收支类型。")]
-    public TransactionKind Kind { get; set; } = TransactionKind.Expense;
+    public string Kind { get; set; } = "";
 
     /// <summary>
     /// 分类主题色，使用 #RRGGBB 格式。

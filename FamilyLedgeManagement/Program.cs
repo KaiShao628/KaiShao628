@@ -1,15 +1,23 @@
-﻿using FamilyLedgeManagement.Components;
+﻿using BootstrapBlazor.Components;
+using FamilyLedgeManagement.Components;
 using FamilyLedgeManagement.Database;
 using FamilyLedgeManagement.Dtos;
 using FamilyLedgeManagement.Services;
 using FamilyLedgeManagement.Utilities;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+var supportedCultures = new List<string> { "zh-CN", "en-US" };
+var localeDirectory = Path.Combine(builder.Environment.ContentRootPath, "Locales");
+var localeFiles = supportedCultures
+    .Select(culture => Path.Combine(localeDirectory, $"{culture}.json"))
+    .ToArray();
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -17,9 +25,33 @@ KLFamilyLedgeAppSettingsHelper.Initialization();
 FamilyLedgeMongoDBClient.Instance.StartServer();
 
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
-builder.Services.AddBootstrapBlazor();
+builder.Services.AddLocalization();
+builder.Services.AddBootstrapBlazor(options =>
+{
+    options.ToastDelay = 4000;
+    options.SupportedCultures = supportedCultures;
+    options.FallbackCulture = "zh-CN";
+}, localizationOptions =>
+{
+    localizationOptions.AdditionalJsonFiles = localeFiles;
+    localizationOptions.IgnoreLocalizerMissing = false;
+    localizationOptions.UseKeyWhenValueIsNull = true;
+});
 builder.Services.AddBootstrapBlazorTableExportService();
 builder.Services.AddBootstrapBlazorHtml2PdfService();
+//builder.Services.Configure<RequestLocalizationOptions>(options =>
+//{
+//    options.SetDefaultCulture("zh-CN")
+//        .AddSupportedCultures(supportedCultures)
+//        .AddSupportedUICultures(supportedCultures);
+
+//    options.RequestCultureProviders = new List<IRequestCultureProvider>
+//    {
+//        new QueryStringRequestCultureProvider(),
+//        new CookieRequestCultureProvider(),
+//        new AcceptLanguageHeaderRequestCultureProvider()
+//    };
+//});
 builder.Services.Configure<HubOptions>(option => option.MaximumReceiveMessageSize = null);
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 builder.Services.AddProjectServices();
@@ -32,6 +64,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
+// 启用本地化
+app.UseRequestLocalization(app.Services.GetService<IOptions<RequestLocalizationOptions>>()!.Value);
+
 app.MapStaticAssets();
 var uploadRoot = Path.Combine(app.Environment.ContentRootPath, "uploads");
 Directory.CreateDirectory(uploadRoot);
@@ -42,6 +77,26 @@ app.UseStaticFiles(new StaticFileOptions
 });
 app.UseAntiforgery();
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+app.MapGet("/culture/set", (string culture, string? redirectUri, HttpContext context) =>
+{
+    if (!supportedCultures.Contains(culture, StringComparer.OrdinalIgnoreCase))
+    {
+        return Results.BadRequest(new { message = $"不支持的语言：{culture}" });
+    }
+
+    context.Response.Cookies.Append(
+        CookieRequestCultureProvider.DefaultCookieName,
+        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+        new CookieOptions
+        {
+            Expires = DateTimeOffset.UtcNow.AddYears(1),
+            IsEssential = true,
+            SameSite = SameSiteMode.Lax
+        });
+
+    var targetUri = string.IsNullOrWhiteSpace(redirectUri) ? "/" : redirectUri;
+    return Results.LocalRedirect(targetUri);
+}).DisableAntiforgery();
 
 app.MapPost("/api/family-ledger/quick-entry", async (QuickEntryRequestDto request, LedgerService ledgerService, CancellationToken cancellationToken) =>
 {
@@ -49,7 +104,7 @@ app.MapPost("/api/family-ledger/quick-entry", async (QuickEntryRequestDto reques
     return Results.Created($"/api/family-ledger/transactions/{transaction.Id}", transaction);
 }).DisableAntiforgery();
 
-app.MapPost("/api/family-ledger/capture-drafts/upload", async (HttpRequest request, LedgerService ledgerService, CancellationToken cancellationToken) =>
+app.MapPost("/api/family-ledger/capture/upload", async (HttpRequest request, LedgerService ledgerService, CancellationToken cancellationToken) =>
 {
     if (!request.HasFormContentType)
     {
@@ -76,7 +131,7 @@ app.MapPost("/api/family-ledger/capture-drafts/upload", async (HttpRequest reque
         capturedAt = parsedCapturedAt;
     }
 
-    var draftRequest = new CaptureDraftRequestDto
+    var captureRequest = new CaptureEntryRequestDto
     {
         MemberId = form["memberId"].ToString(),
         SuggestedCategoryId = form["suggestedCategoryId"].ToString(),
@@ -88,7 +143,7 @@ app.MapPost("/api/family-ledger/capture-drafts/upload", async (HttpRequest reque
     };
 
     await using var stream = file.OpenReadStream();
-    var transaction = await ledgerService.AddTransactionFromCaptureAsync(draftRequest, stream, file.FileName, cancellationToken);
+    var transaction = await ledgerService.AddTransactionFromCaptureAsync(captureRequest, stream, file.FileName, cancellationToken);
     return Results.Created($"/api/family-ledger/transactions/{transaction.Id}", transaction);
 }).DisableAntiforgery();
 

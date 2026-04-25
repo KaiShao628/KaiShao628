@@ -29,7 +29,8 @@ public sealed class TransactionEditorDto
     /// 账单收支类型。
     /// </summary>
     [Required(ErrorMessage = "请选择收支类型。")]
-    public TransactionKind Kind { get; set; } = TransactionKind.Expense;
+    public string Kind { get; set; } = string.Empty;
+    public string KindName { get; set; } = string.Empty;
 
     /// <summary>
     /// 账单金额。

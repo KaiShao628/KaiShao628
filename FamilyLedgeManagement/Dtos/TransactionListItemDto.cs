@@ -1,17 +1,13 @@
-﻿using FamilyLedgeManagement.Enums;
+﻿using FamilyLedgeManagement.Dtos.BaseDtos;
+using FamilyLedgeManagement.Enums;
 
 namespace FamilyLedgeManagement.Dtos;
 
 /// <summary>
 /// 账单列表展示 DTO。
 /// </summary>
-public sealed class TransactionListItemDto
+public sealed class TransactionListItemDto : EntityBaseDto
 {
-    /// <summary>
-    /// 账单唯一标识。
-    /// </summary>
-    public string Id { get; set; } = string.Empty;
-
     /// <summary>
     /// 账单归属成员标识。
     /// </summary>
@@ -35,7 +31,8 @@ public sealed class TransactionListItemDto
     /// <summary>
     /// 账单收支类型。
     /// </summary>
-    public TransactionKind Kind { get; set; }
+    public string Kind { get; set; } = string.Empty;
+    public string KindName { get; set; } = string.Empty;
 
     /// <summary>
     /// 账单金额。

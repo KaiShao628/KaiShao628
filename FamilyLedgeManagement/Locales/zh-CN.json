@@ -1,4 +1,4 @@
-﻿{
+{
   "FamilyLedgeManagement.Data.Foo": {
     "Name": "姓名",
     "DateTime": "日期",
@@ -22,6 +22,14 @@
     "PlaceHolder": "请选择 ...",
     "Primary": "小学",
     "Middle": "中学"
+  },
+  "FamilyLedgeManagement.Components.Pages.DictionaryPages.DictionaryChildRight": {
+    "DicValueSearch": "值/中文值",
+    "Value": "值",
+    "CValue": "中文值",
+    "IsUsed": "是否启用",
+    "UpdateTime": "更新时间",
+    "BelongDic": "所属字典",
+    "DicValueCode": "字典值Code"
   }
 }
-

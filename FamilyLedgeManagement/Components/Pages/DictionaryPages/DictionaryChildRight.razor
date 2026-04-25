@@ -1,4 +1,7 @@
 ﻿@using FamilyLedgeManagement.Dtos.DictionaryDtos
+@inject IStringLocalizer<DictionaryChildRight> Localizer
+
+    <div>@Localizer["DicValueCode"]</div>
 <div class="table-resizable-div" style="height:calc(100% + 0px)">
     <div class="table-resizable-table">
         <Table TItem="DictionaryValueDto" @ref="_dicValueTable" IsFixedHeader="true" IsMultipleSelect="true"

@@ -82,7 +82,7 @@ public partial class Index
         return Task.FromResult(CreateNewEditor());
     }
 
-    protected async Task<bool> OnSaveAsync(TransactionEditorDto item, ItemChangedType _)
+    protected async Task<bool> OnSaveAsync(TransactionListItemDto item, ItemChangedType _)
     {
         ResetStatus();
 
@@ -135,14 +135,14 @@ public partial class Index
     private TransactionEditorDto CreateNewEditor()
     {
         var memberId = Context?.Members.FirstOrDefault()?.Id ?? string.Empty;
-        var categoryId = Context?.Categories.FirstOrDefault(x => x.Kind == TransactionKind.Expense)?.Id ?? string.Empty;
+        var categoryId = Context?.Categories.FirstOrDefault(x => x.Kind == "")?.Id ?? string.Empty;
         var paymentMethod = Context?.PaymentMethods.FirstOrDefault() ?? "微信支付";
 
         return new TransactionEditorDto
         {
             MemberId = memberId,
             CategoryId = categoryId,
-            Kind = TransactionKind.Expense,
+            Kind = "",
             PaymentMethod = paymentMethod,
             OccurredAt = DateTimeOffset.Now
         };

@@ -1,4 +1,4 @@
-﻿{
+{
   "FamilyLedgeManagement.Data.Foo": {
     "Name": "Name",
     "DateTime": "DateTime",
@@ -22,6 +22,14 @@
     "PlaceHolder": "Click to select ...",
     "Primary": "Primary",
     "Middle": "Middle"
+  },
+  "FamilyLedgeManagement.Components.Pages.DictionaryPages.DictionaryChildRight": {
+    "DicValueSearch": "Value/CValue",
+    "Value": "Value",
+    "CValue": "CValue",
+    "IsUsed": "IsUsed",
+    "UpdateTime": "UpdateTime",
+    "BelongDic": "BelongDic",
+    "DicValueCode": "DicValueCode"
   }
 }
-

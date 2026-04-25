@@ -16,7 +16,7 @@ public sealed class LedgerCategory : Entity
     /// <summary>
     /// 分类适用的收支类型。
     /// </summary>
-    public TransactionKind Kind { get; set; }
+    public string Kind { get; set; } = string.Empty;
 
     /// <summary>
     /// 分类主题色。

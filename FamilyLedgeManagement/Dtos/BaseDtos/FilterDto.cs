@@ -18,5 +18,8 @@
         public string LoginUserId { get; set; }
 
         public bool IsSuperAdmin { get; set; }
+
+        public DateTimeOffset TransactionStratDate { get; set; }
+        public DateTimeOffset TransactionEndDate { get; set; }
     }
 }

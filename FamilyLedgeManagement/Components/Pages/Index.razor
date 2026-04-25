@@ -40,8 +40,8 @@
         </Card>
         <Card HeaderText="截图记账" Color="Color.Warning" IsShadow="true">
             <BodyTemplate>
-                <Display TValue="int" Value="@Dashboard.PendingCaptureCount" ShowLabel="false" />
-                <p>识别截图后直接写入正式账单</p>
+                <Display TValue="int" Value="@Dashboard.RecentTransactions.Count" ShowLabel="false" />
+                <p>截图识别完成后直接写入正式账单</p>
             </BodyTemplate>
         </Card>
     </div>
@@ -66,13 +66,9 @@
                Items="@RecentItems"
                ShowToolbar="true"
                ShowSearch="true"
-           ShowPagination="true"
            PageItems="59"
            PageItemsSource="@DefaultPageItemsSource"
-               ShowAddButton="true"
-               ShowEditButton="true"
-               ShowDeleteButton="true"
-           ShowDefaultButtons="true"
+            
            ShowExtendButtons="true"
                ShowExtendEditButton="true"
                ShowExtendDeleteButton="true"
@@ -82,13 +78,7 @@
                IsMultipleSelect="true"
                IsKeepSelectedRows="true"
                SelectedRows="@SelectedRows"
-               SelectedRowsChanged="@OnSelectedRowsChanged"
-               EditMode="EditMode.Popup"
-               AddModalTitle="新增账单"
-               EditModalTitle="编辑账单"
-               OnAddAsync="@OnAddAsync"
-               OnSaveAsync="@OnSaveAsync"
-               OnDeleteAsync="@OnDeleteAsync">
+               SelectedRowsChanged="@OnSelectedRowsChanged">
             <TableColumns>
                 <TableColumn @bind-Field="@context.Id" Text="编号" Ignore="true" Readonly="true" />
                 <TableColumn @bind-Field="@context.OccurredAt" Text="时间" FormatString="MM-dd HH:mm" Sortable="true" />
@@ -109,7 +99,7 @@
                 <Alert Color="Color.Light" ShowBar="true" ShowBorder="true">iPhone 快捷指令可把截图上传给接口，系统识别金额、时间、商品和支付方式后直接保存为正式账单。</Alert>
                 <ol class="flow-list">
                     <li>快捷指令获取最新截图或分享中的图片。</li>
-                    <li>上传给 <code>POST /api/family-ledger/capture-drafts/upload</code>。</li>
+                    <li>上传给 <code>POST /api/family-ledger/capture/upload</code>。</li>
                     <li>后端识别金额、时间、商品、支付方式等核心字段。</li>
                     <li>识别完成后直接生成正式账单，可在账单流水中维护。</li>
                 </ol>

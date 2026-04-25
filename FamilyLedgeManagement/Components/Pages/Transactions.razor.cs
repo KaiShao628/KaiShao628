@@ -1,5 +1,7 @@
 ﻿using BootstrapBlazor.Components;
 using FamilyLedgeManagement.Dtos;
+using FamilyLedgeManagement.Dtos.BaseDtos;
+using FamilyLedgeManagement.Dtos.DictionaryDtos;
 using FamilyLedgeManagement.Enums;
 using FamilyLedgeManagement.Services;
 using Microsoft.AspNetCore.Components;
@@ -8,6 +10,11 @@ namespace FamilyLedgeManagement.Components.Pages;
 
 public partial class Transactions
 {
+    /// <summary>
+    /// 家庭账本聚合业务服务。
+    /// </summary>
+    [Inject]
+    private TransactionService TransactionService { get; set; } = default!;
     /// <summary>
     /// 家庭账本聚合业务服务。
     /// </summary>
@@ -32,7 +39,7 @@ public partial class Transactions
     /// <summary>
     /// 当前表格选中的账单行。
     /// </summary>
-    private List<TransactionEditorDto> SelectedRows { get; set; } = [];
+    private List<TransactionListItemDto> SelectedRows { get; set; } = [];
 
     /// <summary>
     /// 成员字段的下拉映射数据。
@@ -59,7 +66,7 @@ public partial class Transactions
     /// </summary>
     private string? ErrorMessage { get; set; }
 
-    private Table<TransactionEditorDto>? _transactionTable;
+    private Table<TransactionListItemDto>? _transactionTable;
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,57 +77,50 @@ public partial class Transactions
             .ToList();
     }
 
-    private async Task<QueryData<TransactionEditorDto>> OnQueryAsync(QueryPageOptions options)
+    private async Task<QueryData<TransactionListItemDto>> OnQueryAsync(QueryPageOptions options)
     {
-        var month = DateOnly.Parse($"{SelectedMonthText}-01");
-        var items = (await LedgerService.GetTransactionsAsync(month))
-            .Select(x => new TransactionEditorDto
-            {
-                Id = x.Id,
-                MemberId = x.MemberId,
-                CategoryId = x.CategoryId,
-                Kind = x.Kind,
-                Amount = x.Amount,
-                MerchantName = x.MerchantName,
-                PaymentMethod = x.PaymentMethod,
-                Note = x.Note == "-" ? string.Empty : x.Note,
-                OccurredAt = x.OccurredAt
-            })
-            .ToList();
-
-        if (!string.IsNullOrWhiteSpace(options.SearchText))
+        var stratDate = DateTimeOffset.Parse($"{SelectedMonthText}-01");
+        var endDate = stratDate.AddMonths(1).AddDays(-1);
+        var total = 0;
+        var resultItems = new List<TransactionListItemDto>();
+        var filter = new FilterDto()
         {
-            var keyword = options.SearchText.Trim();
-            items = items.Where(x =>
-                    x.MerchantName.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                    x.PaymentMethod.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                    x.Note.Contains(keyword, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
-
-        var totalCount = items.Count;
-        var pageItems = options.PageItems <= 0 ? 59 : options.PageItems;
-        var pageIndex = options.PageIndex <= 0 ? 1 : options.PageIndex;
-        var pagedItems = items.Skip((pageIndex - 1) * pageItems).Take(pageItems).ToList();
-
-        return new QueryData<TransactionEditorDto>
-        {
-            Items = pagedItems,
-            TotalCount = totalCount,
-            IsFiltered = true,
-            IsSearch = !string.IsNullOrWhiteSpace(options.SearchText),
-            IsAdvanceSearch = false,
-            IsSorted = false
+            PageIndex = options.PageIndex,
+            PageSize = options.PageItems,
+            SearchText = options.SearchText,
+            TransactionStratDate = stratDate,
+            TransactionEndDate = endDate,
         };
+        var tableResult = await TransactionService.OnQueryAsync(filter);
+        if (tableResult.Data != null && tableResult.Data.Result.Count > 0)
+        {
+            resultItems = tableResult.Data.Result;
+            total = tableResult.Data.TotalPages;
+        }
+        return new QueryData<TransactionListItemDto>()
+        {
+            Items = resultItems,
+
+            TotalCount = total,
+
+            IsFiltered = true,
+
+            IsSearch = true,
+
+            IsAdvanceSearch = true,
+
+            IsSorted = true,
+        };
+
     }
 
-    private Task<TransactionEditorDto> OnAddAsync()
+    private Task<TransactionListItemDto> OnAddAsync()
     {
         ResetStatus();
         return Task.FromResult(CreateNewEditor());
     }
 
-    private async Task<bool> OnSaveAsync(TransactionEditorDto item, ItemChangedType _)
+    private async Task<bool> OnSaveAsync(TransactionListItemDto item, ItemChangedType _)
     {
         ResetStatus();
 
@@ -140,7 +140,7 @@ public partial class Transactions
         }
     }
 
-    private async Task<bool> OnDeleteAsync(IEnumerable<TransactionEditorDto> items)
+    private async Task<bool> OnDeleteAsync(IEnumerable<TransactionListItemDto> items)
     {
         ResetStatus();
         var rows = items.ToList();
@@ -163,24 +163,24 @@ public partial class Transactions
         }
     }
 
-    private Task OnResetSearchAsync(TransactionEditorDto _)
+    private Task OnResetSearchAsync(TransactionListItemDto _)
     {
         SelectedMonthText = $"{DateTime.Today:yyyy-MM}";
         ResetStatus();
         return Task.CompletedTask;
     }
 
-    private TransactionEditorDto CreateNewEditor()
+    private TransactionListItemDto CreateNewEditor()
     {
         var memberId = Context?.Members.FirstOrDefault()?.Id ?? string.Empty;
-        var categoryId = Context?.Categories.FirstOrDefault(x => x.Kind == TransactionKind.Expense)?.Id ?? string.Empty;
+        var categoryId = Context?.Categories.FirstOrDefault(x => x.Kind == "Expense")?.Id ?? string.Empty;
         var paymentMethod = Context?.PaymentMethods.FirstOrDefault() ?? "微信支付";
 
-        return new TransactionEditorDto
+        return new TransactionListItemDto
         {
             MemberId = memberId,
             CategoryId = categoryId,
-            Kind = TransactionKind.Expense,
+            Kind = "",
             PaymentMethod = paymentMethod,
             OccurredAt = DateTimeOffset.Now
         };

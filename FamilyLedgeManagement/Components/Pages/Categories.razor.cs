@@ -105,7 +105,7 @@ public partial class Categories
             {
                 Id = x.Id,
                 Name = x.Name,
-                Kind = x.Kind,
+                Kind = "",
                 Color = x.Color
             })
             .ToList();
@@ -119,7 +119,7 @@ public partial class Categories
 
     private static LedgerCategoryEditorDto CreateNewEditor() => new()
     {
-        Kind = TransactionKind.Expense,
+        Kind = "",
         Color = "#dc6e2f"
     };
 }

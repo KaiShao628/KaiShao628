@@ -21,7 +21,7 @@ public sealed class LedgerTransaction : Entity
     /// <summary>
     /// 账单收支类型。
     /// </summary>
-    public TransactionKind Kind { get; set; }
+    public string Kind { get; set; } = string.Empty;
 
     /// <summary>
     /// 账单金额。

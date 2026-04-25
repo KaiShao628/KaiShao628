@@ -17,18 +17,7 @@ public partial class QuickEntry
 
     protected string KindValue
     {
-        get => Request.Kind.ToString();
-        set
-        {
-            if (Enum.TryParse<TransactionKind>(value, out var kind))
-            {
-                Request.Kind = kind;
-                if (Context is not null && FilteredCategories.All(x => x.Id != Request.CategoryId))
-                {
-                    Request.CategoryId = FilteredCategories.First().Id;
-                }
-            }
-        }
+        get; set;
     }
 
     protected IEnumerable<LedgerCategoryDto> FilteredCategories =>
@@ -50,8 +39,8 @@ public partial class QuickEntry
     protected void FillDinnerPreset()
     {
         if (Context is null) return;
-        Request.Kind = TransactionKind.Expense;
-        Request.CategoryId = Context.Categories.First(x => x.Name == "餐饮").Id;
+        Request.Kind = "Expense";
+        Request.CategoryId = Context.Categories.FirstOrDefault(x => x.Name == "餐饮").Id;
         Request.MerchantName = "晚餐";
         Request.Note = "可直接改成具体餐厅";
         Request.OccurredAt = DateTimeOffset.Now;
@@ -60,8 +49,8 @@ public partial class QuickEntry
     protected void FillGroceriesPreset()
     {
         if (Context is null) return;
-        Request.Kind = TransactionKind.Expense;
-        Request.CategoryId = Context.Categories.First(x => x.Name == "买菜").Id;
+        Request.Kind = "Expense";
+        Request.CategoryId = Context.Categories.FirstOrDefault(x => x.Name == "买菜").Id;
         Request.MerchantName = "超市/生鲜";
         Request.Note = "日常采购";
         Request.OccurredAt = DateTimeOffset.Now;
@@ -70,18 +59,22 @@ public partial class QuickEntry
     private void ResetRequest()
     {
         if (Context is null) return;
-        var defaultCategory = Context.Categories.First(x => x.Kind == TransactionKind.Expense);
-        Request = new QuickEntryRequestDto
+        var defaultCategory = Context.Categories.FirstOrDefault(x => x.Kind == "Expense");
+        if (defaultCategory != null)
         {
-            Kind = TransactionKind.Expense,
-            CategoryId = defaultCategory.Id,
-            MemberId = Context.Members.First().Id,
-            PaymentMethod = Context.PaymentMethods.First(),
-            Amount = 0,
-            MerchantName = string.Empty,
-            Note = string.Empty,
-            OccurredAt = DateTimeOffset.Now
-        };
+            Request = new QuickEntryRequestDto
+            {
+                Kind = "Expense",
+                CategoryId = defaultCategory.Id,
+                MemberId = Context.Members.First().Id,
+                PaymentMethod = Context.PaymentMethods.FirstOrDefault(),
+                Amount = 0,
+                MerchantName = string.Empty,
+                Note = string.Empty,
+                OccurredAt = DateTimeOffset.Now
+            };
+        }
+       
     }
 }
 

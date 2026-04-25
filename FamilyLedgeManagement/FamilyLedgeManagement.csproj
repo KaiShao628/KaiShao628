@@ -8,14 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Remove="Locales\en.json" />
-		<Content Remove="Locales\zh.json" />
 		<Content Remove="wwwroot\js\jsHelper.js" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Include="Locales\en.json" />
-		<EmbeddedResource Include="Locales\zh.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -49,6 +42,12 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\DatabaseCommon\DatabaseCommon.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Locales\*.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>

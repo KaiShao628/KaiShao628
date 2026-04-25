@@ -19,7 +19,7 @@
         }
     </div>
 
-    <Table TItem="TransactionEditorDto" @ref="@_transactionTable" IsFixedHeader="true" IsPagination="true" PageItemsSource="@Helpers.PageItemSource" FixedExtendButtonsColumn="true"
+    <Table TItem="TransactionListItemDto" @ref="@_transactionTable" IsFixedHeader="true" IsPagination="true" PageItemsSource="@Helpers.PageItemSource" FixedExtendButtonsColumn="true"
            SearchMode="SearchMode.Top" ShowSearchText="false" SearchDialogItemsPerRow="2" ShowLoading="true" ShowColumnList="true"
            IsMultipleSelect="true" IsBordered="true" IsStriped="true" ClickToSelect="true" IsKeepSelectedRows="true" SelectedRows="@SelectedRows"
            ShowSearch="true" ShowRefresh="true" ShowAdvancedSearch="false" AddModalTitle="新增账单" EditModalTitle="编辑账单"
