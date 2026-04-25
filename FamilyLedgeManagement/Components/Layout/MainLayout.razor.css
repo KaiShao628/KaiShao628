@@ -1,4 +1,119 @@
 .page {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+::deep .top-nav-layout {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
+::deep .top-nav-layout .layout-header,
+::deep .top-nav-layout .bb-layout-header,
+::deep .top-nav-layout header,
+::deep .top-nav-layout .header {
+    min-height: 56px;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: #000000;
+}
+
+::deep .top-nav-layout .layout-main,
+::deep .top-nav-layout .bb-layout-main,
+::deep .top-nav-layout main,
+::deep .top-nav-layout .main,
+::deep .top-nav-layout .content,
+::deep .top-nav-layout .body-content {
+    width: 100%;
+    height: calc(100dvh - 56px);
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    padding: 1rem;
+}
+
+.top-nav-shell {
+    width: 100%;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 0.75rem;
+    background: #000000;
+    color: #ffffff;
+}
+
+.header-brand {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    white-space: nowrap;
+}
+
+.header-title {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.top-nav-menu {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.top-nav-user {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+::deep .page-dashboard,
+::deep .page-quick-entry,
+::deep .capture-layout,
+::deep .management-layout,
+::deep .table-page {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
+::deep .page-dashboard > *,
+::deep .page-quick-entry > *,
+::deep .capture-layout > *,
+::deep .management-layout > *,
+::deep .table-page > * {
+    min-width: 0;
+}
+
+::deep .dashboard-intro,
+::deep .toolbar-row {
+    flex-wrap: wrap;
+}
+
+::deep .top-nav-user .dropdown-toggle,
+::deep .top-nav-user .dropdown-logout .logout-text {
+    color: #ffffff;
+}
+
+@media (max-width: 992px) {
+    ::deep .top-nav-layout .layout-main,
+    ::deep .top-nav-layout .bb-layout-main,
+    ::deep .top-nav-layout main,
+    ::deep .top-nav-layout .main,
+    ::deep .top-nav-layout .content,
+    ::deep .top-nav-layout .body-content {
+        padding: 0.75rem;
+    }
+
+    .top-nav-shell {
+        gap: 0.75rem;
+        padding: 0 0.5rem;
+    }
 }

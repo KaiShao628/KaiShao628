@@ -1,27 +1,32 @@
 ﻿@inherits LayoutComponentBase
+<BootstrapBlazorRoot>
 
-<div class="page">
-    <Layout SideWidth="0" IsPage="true" ShowCollapseBar="false" IsAccordion="true" IsFixedHeader="true" Class="top-nav-layout">
-        <Header>
-            <div class="header-brand">
-                <span class="header-title">家庭记账系统</span>
-            </div>
-            <div class="top-nav-menu ms-3 flex-sm-fill">
-                <FamilyLedgeManagement.Components.Layout.TopMenu MenuItems="@Menus" />
-            </div>
-            <div class="top-nav-user">
-                <Logout ImageUrl="@_nameUrl" DisplayName="Jayce" UserName="Jayce">
-                </Logout>
-            </div>
-        </Header>
-        <Main>
-            @Body
-        </Main>
-    </Layout>
-</div>
 
-<div id="blazor-error-ui">
-    系统发生未处理异常。
-    <a href="" class="reload">刷新</a>
-    <a class="dismiss">×</a>
-</div>
+    <div class="page">
+        <Layout SideWidth="0" IsPage="true" ShowCollapseBar="false" IsAccordion="true" IsFixedHeader="true" Class="top-nav-layout">
+            <Header>
+                <div class="top-nav-shell">
+                    <div class="header-brand">
+                        <span class="header-title">家庭记账系统</span>
+                    </div>
+                    <div class="top-nav-menu">
+                        <FamilyLedgeManagement.Components.Layout.TopMenu MenuItems="@Menus" />
+                    </div>
+                    <div class="top-nav-user">
+                        <Logout ImageUrl="@_nameUrl" DisplayName="Jayce" UserName="Jayce">
+                        </Logout>
+                    </div>
+                </div>
+            </Header>
+            <Main>
+                @Body
+            </Main>
+        </Layout>
+    </div>
+
+    <div id="blazor-error-ui">
+        系统发生未处理异常。
+        <a href="" class="reload">刷新</a>
+        <a class="dismiss">×</a>
+    </div>
+</BootstrapBlazorRoot>

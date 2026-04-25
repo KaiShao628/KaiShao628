@@ -1,6 +1,8 @@
-﻿@using System.Diagnostics.CodeAnalysis;
-<Menu Items="@MenuItems" IsVertical="IsVertical" OnClick="OnClickRemovePopover" />
+@using System.Diagnostics.CodeAnalysis
 
+<div class="app-top-menu">
+    <Menu Items="@MenuItems" IsVertical="IsVertical" OnClick="OnClickRemovePopover" />
+</div>
 
 @code {
     [NotNull]
@@ -10,9 +12,6 @@
     [Parameter]
     public bool IsVertical { get; set; } = false;
 
-    /// <summary>
-    /// 在多项选择器弹窗在选择时 切换Mune 弹窗不会消失会固定在页面上面 手动删除
-    /// </summary>
     public async Task OnClickRemovePopover(MenuItem item)
     {
         await JSRuntime.InvokeVoidAsync("RemovePopover", "");

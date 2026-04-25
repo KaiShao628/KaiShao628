@@ -1,0 +1,105 @@
+.app-top-menu {
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+    .app-top-menu::-webkit-scrollbar {
+        display: none;
+    }
+
+    .app-top-menu ::deep .menu {
+        --bb-menu-nav-pading: 0 0.35rem;
+        --bb-menu-nav-border-bottom: 0;
+        --bb-menu-min-width: 160px;
+        --bb-menu-active-color: #228b5f;
+        --bb-menu-bar-bg: #228b5f;
+        --bb-menu-item-hover-bg: rgba(255, 255, 255, 0.1);
+        --bb-menu-item-hover-color: #ffffff;
+        --bb-menu-sub-bg: #111111;
+        --bs-nav-link-color: #ffffff;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+
+        .app-top-menu ::deep .menu .nav,
+        .app-top-menu ::deep .menu ul {
+            background: transparent;
+        }
+
+.app-top-menu ::deep .menu .nav-link,
+.app-top-menu ::deep .menu .menu-link,
+.app-top-menu ::deep .menu .menu-item > a,
+.app-top-menu ::deep .menu .dropdown-toggle {
+    min-height: 36px;
+    padding: 0.42rem 0.8rem;
+    font-size: 1.08rem;
+    border: 0;
+    border-radius: 0.5rem;
+    box-shadow: none;
+    color: #ffffff;
+    transition: background-color 0.16s ease, color 0.16s ease;
+        }
+
+            .app-top-menu ::deep .menu .nav-link:hover,
+            .app-top-menu ::deep .menu .menu-link:hover,
+            .app-top-menu ::deep .menu .menu-item > a:hover,
+            .app-top-menu ::deep .menu .dropdown-toggle:hover,
+            .app-top-menu ::deep .menu .nav-link:focus,
+            .app-top-menu ::deep .menu .menu-link:focus,
+            .app-top-menu ::deep .menu .menu-item > a:focus,
+            .app-top-menu ::deep .menu .dropdown-toggle:focus {
+                border: 0;
+                box-shadow: none;
+            }
+
+            .app-top-menu ::deep .menu .nav-link.active,
+            .app-top-menu ::deep .menu .menu-item.active > a,
+            .app-top-menu ::deep .menu .active > a {
+                color: #228b5f;
+                border: 0;
+                box-shadow: none;
+            }
+
+        .app-top-menu ::deep .menu .fa,
+        .app-top-menu ::deep .menu .fas,
+        .app-top-menu ::deep .menu .far,
+        .app-top-menu ::deep .menu .fab,
+        .app-top-menu ::deep .menu .fa-solid {
+            color: inherit;
+        }
+
+        .app-top-menu ::deep .menu .nav-link.active .fa,
+        .app-top-menu ::deep .menu .nav-link.active .fas,
+        .app-top-menu ::deep .menu .nav-link.active .far,
+        .app-top-menu ::deep .menu .nav-link.active .fab,
+        .app-top-menu ::deep .menu .nav-link.active .fa-solid,
+        .app-top-menu ::deep .menu .menu-item.active > a .fa,
+        .app-top-menu ::deep .menu .menu-item.active > a .fas,
+        .app-top-menu ::deep .menu .menu-item.active > a .far,
+        .app-top-menu ::deep .menu .menu-item.active > a .fab,
+        .app-top-menu ::deep .menu .menu-item.active > a .fa-solid,
+        .app-top-menu ::deep .menu .active > a .fa,
+        .app-top-menu ::deep .menu .active > a .fas,
+        .app-top-menu ::deep .menu .active > a .far,
+        .app-top-menu ::deep .menu .active > a .fab,
+        .app-top-menu ::deep .menu .active > a .fa-solid {
+            color: #228b5f;
+        }
+
+@media (max-width: 768px) {
+    .app-top-menu ::deep .menu {
+        --bb-menu-nav-pading: 0 0.2rem;
+    }
+
+    .app-top-menu ::deep .menu .nav-link,
+    .app-top-menu ::deep .menu .menu-link,
+    .app-top-menu ::deep .menu .menu-item > a,
+    .app-top-menu ::deep .menu .dropdown-toggle {
+        min-height: 34px;
+        padding: 0.36rem 0.72rem;
+        font-size: 1rem;
+    }
+}

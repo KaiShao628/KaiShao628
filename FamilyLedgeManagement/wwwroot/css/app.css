@@ -1,178 +1,14 @@
 ﻿html,
 body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
     font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-}
-
-body > div,
-#app {
-    width: 100%;
-    height: 100%;
-    min-width: 0;
-    min-height: 0;
-}
-
-.page {
-    width: 100%;
-    height: 100dvh;
-    overflow: hidden;
-}
-
-.page > *,
-.page * {
-    box-sizing: border-box;
-}
-
-.top-nav-layout {
-    width: 100%;
-    height: 100%;
-    min-width: 0;
-    min-height: 0;
-}
-
-.top-nav-layout .layout-header,
-.top-nav-layout .bb-layout-header,
-.top-nav-layout header,
-.top-nav-layout .header,
-.top-nav-layout .layout-banner,
-.top-nav-layout .top-nav-user {
-    background: #000 !important;
-}
-
-.top-nav-layout .layout-header,
-.top-nav-layout .bb-layout-header,
-.top-nav-layout header,
-.top-nav-layout .header {
-    color: #fff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    min-height: 60px;
-}
-
-.top-nav-layout .header-brand,
-.top-nav-layout .header-title,
-.top-nav-layout .header-brand span,
-.top-nav-layout .dropdown-logout .logout-text,
-.top-nav-layout .dropdown-toggle,
-.top-nav-layout .nav-link,
-.top-nav-layout .menu-link,
-.top-nav-layout .menu-item,
-.top-nav-layout .menu-item a,
-.top-nav-layout .menu .nav-link,
-.top-nav-layout .menu .dropdown-toggle,
-.top-nav-layout .top-nav-menu,
-.top-nav-layout .top-nav-menu .fa,
-.top-nav-layout .top-nav-menu .fas,
-.top-nav-layout .top-nav-menu .far,
-.top-nav-layout .top-nav-menu .fab,
-.top-nav-layout .top-nav-menu .fa-solid {
-    color: #fff !important;
-}
-
-.top-nav-layout .top-nav-menu {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-    font-size: 18px;
-    margin-top: 5px;
-    overflow: hidden;
-}
-
-.top-nav-layout .top-nav-user {
-    margin-top: 5px;
-    padding: 0 0.5rem;
-    flex: 0 0 auto;
-}
-
-.top-nav-layout .menu,
-.top-nav-layout .nav,
-.top-nav-layout .top-nav-menu ul {
-    background: transparent !important;
-}
-
-.top-nav-layout .menu-item > a,
-.top-nav-layout .nav-link,
-.top-nav-layout .dropdown-toggle {
-    border-radius: 0.5rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.top-nav-layout .menu-item > a:hover,
-.top-nav-layout .menu-item > a:focus,
-.top-nav-layout .nav-link:hover,
-.top-nav-layout .nav-link:focus,
-.top-nav-layout .dropdown-toggle:hover,
-.top-nav-layout .dropdown-toggle:focus {
-    background: rgba(255, 255, 255, 0.12) !important;
-    color: #fff !important;
-}
-
-.top-nav-layout .active > a,
-.top-nav-layout .menu-item.active > a,
-.top-nav-layout .nav-link.active,
-.top-nav-layout .menu-item.is-active > a,
-.top-nav-layout .dropdown-item.active,
-.top-nav-layout .dropdown-item:active {
-    background: rgba(255, 255, 255, 0.18) !important;
-    color: #fff !important;
-}
-
-.top-nav-layout .dropdown-menu,
-.top-nav-layout .popover,
-.top-nav-layout .dropdown-body {
-    background: #111;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.top-nav-layout .dropdown-menu .dropdown-item,
-.top-nav-layout .dropdown-menu a,
-.top-nav-layout .dropdown-menu button {
-    color: #fff !important;
-}
-
-.top-nav-layout .dropdown-menu .dropdown-item:hover,
-.top-nav-layout .dropdown-menu .dropdown-item:focus,
-.top-nav-layout .dropdown-menu a:hover,
-.top-nav-layout .dropdown-menu button:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
-    color: #fff !important;
-}
-
-.top-nav-layout main,
-.top-nav-layout .main,
-.top-nav-layout .layout-main,
-.top-nav-layout .bb-layout-main,
-.top-nav-layout .content,
-.top-nav-layout .body-content {
-    width: 100%;
-    height: calc(100dvh - 60px);
-    min-width: 0;
-    min-height: 0;
-    overflow: auto;
-    padding: 1rem;
 }
 
 .page-dashboard,
 .page-quick-entry,
 .capture-layout,
-.management-layout,
-.table-page {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    min-height: 0;
+.management-layout {
     display: grid;
     gap: 1rem;
-}
-
-.page-dashboard > *,
-.page-quick-entry > *,
-.capture-layout > *,
-.management-layout > *,
-.table-page > * {
-    min-width: 0;
 }
 
 .dashboard-intro {
@@ -180,12 +16,11 @@ body > div,
     justify-content: space-between;
     gap: 1rem;
     align-items: center;
-    flex-wrap: wrap;
 }
 
-.dashboard-intro h2 {
-    margin: 0 0 0.5rem;
-}
+    .dashboard-intro h2 {
+        margin: 0 0 0.5rem;
+    }
 
 .dashboard-links,
 .action-row {
@@ -211,7 +46,9 @@ body > div,
 .page-quick-entry,
 .capture-layout,
 .management-layout {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
 
 .capture-inbox-card {
@@ -225,9 +62,9 @@ body > div,
     margin: 1rem 0;
 }
 
-.form-grid .full {
-    grid-column: 1 / -1;
-}
+    .form-grid .full {
+        grid-column: 1 / -1;
+    }
 
 .form-label {
     display: block;
@@ -241,7 +78,11 @@ body > div,
     align-items: end;
     gap: 1rem;
     margin-bottom: 1rem;
-    flex-wrap: wrap;
+}
+
+.table-page {
+    display: grid;
+    gap: 1rem;
 }
 
 .table-page-header {
@@ -249,14 +90,14 @@ body > div,
     gap: 0.75rem;
 }
 
-.table-page-header h3 {
-    margin: 0;
-}
+    .table-page-header h3 {
+        margin: 0;
+    }
 
-.table-page-header p {
-    margin: 0;
-    color: var(--bs-secondary-color);
-}
+    .table-page-header p {
+        margin: 0;
+        color: var(--bs-secondary-color);
+    }
 
 .table-editor-panel {
     padding: 1rem 1.25rem;
@@ -292,10 +133,10 @@ body > div,
     padding-left: 1.2rem;
 }
 
-.tip-list li + li,
-.flow-list li + li {
-    margin-top: 0.5rem;
-}
+    .tip-list li + li,
+    .flow-list li + li {
+        margin-top: 0.5rem;
+    }
 
 .capture-preview-panel {
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -346,12 +187,12 @@ body > div,
     z-index: 1000;
 }
 
-#blazor-error-ui .dismiss {
-    cursor: pointer;
-    position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
-}
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
 
 @media (max-width: 1200px) {
     .dashboard-stats,
@@ -367,17 +208,6 @@ body > div,
     }
 }
 
-@media (max-width: 992px) {
-    .top-nav-layout main,
-    .top-nav-layout .main,
-    .top-nav-layout .layout-main,
-    .top-nav-layout .bb-layout-main,
-    .top-nav-layout .content,
-    .top-nav-layout .body-content {
-        padding: 0.75rem;
-    }
-}
-
 @media (max-width: 768px) {
     .dashboard-intro,
     .toolbar-row {
@@ -387,10 +217,5 @@ body > div,
 
     .form-grid {
         grid-template-columns: 1fr;
-    }
-
-    .top-nav-layout .top-nav-menu,
-    .top-nav-layout .top-nav-user {
-        margin-top: 0;
     }
 }
